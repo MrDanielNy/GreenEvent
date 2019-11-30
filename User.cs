@@ -11,7 +11,7 @@ namespace GreenEvent
         public string Password;
         public string Role;
 
-
+        
         public bool CheckPassword(string password)
         {
             return Password == password;
@@ -25,6 +25,16 @@ namespace GreenEvent
             newUser.UserName = username;
             newUser.Password = password;
             newUser.Role = "User";
+
+
+            DataBase db = new DataBase();
+
+            db.AddUser(newUser);
+
+            newUser = db.GetUserByUsername(username);
+            //DataBase.AddUser(newUser);
+
+
 
             //Skicka newUser till databasen
 

@@ -9,16 +9,101 @@ namespace GreenEvent
 
         private User loggedInUser = null;
         private DataBase database = new DataBase();
+        private User controlUser = null; //user object to check registration
+
 
         public void Start()
         {
 
             Console.WriteLine("Welcome to GreenEvent");
 
-            LogIn();
+            bool running = true;
+
+            while (running)
+            {
+                Console.WriteLine("select an option:");
+                Console.WriteLine("1) LogIn");
+                Console.WriteLine("2) Register new user");
+                Console.WriteLine("0) Exit");
+
+                ConsoleKey userChoice = Console.ReadKey().Key;
+
+                switch (userChoice)
+                {
+                    case ConsoleKey.D1:
+                        Console.Clear();
+                        LogIn();
+                        break;
+                    case ConsoleKey.D2:
+                        Console.Clear();
+                        RegisterNewUser();
+                        ShowMenu();
+                        break;
+                    case ConsoleKey.D0:
+                        running = false;
+                        break;
+                }
+            }
+            
+        }// end Start
+
+        /// <summary>
+        /// method to send data for register new User
+        /// </summary>
+        private void RegisterNewUser()
+        {
+            string newUsername; //var for new users name
+            string newPassword; //var for new users password
+           
+
+            bool tryInput; //if new input is incorrect bool will be false
+
+            do
+            {
+                Console.Write("Enter your username: ");
+                newUsername = Console.ReadLine();
+
+                controlUser = database.GetUserByUsername(newUsername);
+
+                if (controlUser != null || newUsername.Length < 3)
+                {
+                    Console.WriteLine($"Username {newUsername} already exits or is to short..");
+                    Console.ReadLine();
+                    tryInput = false;
+                    controlUser = null;
+                }
+                else
+                {
+                    tryInput = true;
+                }
+
+            } while (!tryInput);
+
+            do
+            {
+                Console.Write("Enter your password: ");
+                newPassword = Console.ReadLine();
+                Console.Write("Repeat password: ");
+                string controlPassword = Console.ReadLine();
+                if (newPassword != controlPassword || newPassword.Length < 4)
+                {
+                    Console.WriteLine("Password doesn't match or is to short..");
+                    Console.ReadLine();
+                    tryInput = false;
+                }
+                else
+                {
+                    tryInput = true;
+                }
+
+            } while (!tryInput);
+
+            loggedInUser = User.CreateUser(newUsername, newPassword);
             
         }
-
+        /// <summary>
+        /// Method to log in
+        /// </summary>
         private void LogIn()
         {
            
@@ -29,9 +114,6 @@ namespace GreenEvent
 
                 Console.Write("Write your password: ");
                 string password = Console.ReadLine();
-
-                //Console.WriteLine($"{username} {password}");
-
 
                 User user = database.GetUserByUsername(username);
 
@@ -64,6 +146,7 @@ namespace GreenEvent
             else
             {
                 Console.WriteLine("Travelmenu not yet implemented");
+                ShowMenu();
             }
 
 
@@ -81,16 +164,18 @@ namespace GreenEvent
 
             while (running)
             {
+
+                //changed exit to 0
                 if(loggedInUser.Role == "Admin")
                 {
                     Console.WriteLine($"Welcome {loggedInUser.UserName}, showing Admin-menu");
                     Console.WriteLine("1) Hello");
-                    Console.WriteLine("2) Exit");
+                    Console.WriteLine("0) Exit");
                 } else
                 {
                     Console.WriteLine($"Welcome {loggedInUser.UserName}, showing User-menu");
                     Console.WriteLine("1) Hello");
-                    Console.WriteLine("2) Exit");
+                    Console.WriteLine("0) Exit");
                 }
                 
 
@@ -102,16 +187,14 @@ namespace GreenEvent
                         Console.Clear();
                         Console.WriteLine("Hello!! :)");
                         break;
-                    case ConsoleKey.D2:
+                    case ConsoleKey.D0:
+                        loggedInUser = null;
                         running = false;
                         break;
                 }
 
-               
-
             }
-            
                                                      
-        }
+        } //end of showMenu
     }
 }
