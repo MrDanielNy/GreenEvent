@@ -75,8 +75,25 @@ namespace GreenEvent
             return roleName;
         }
 
-        static public void AddUser(User newUser)
+        public void AddUser(User user)
         {
+            //need an int to set data in user RoleId
+            int roleId = int.Parse(user.Role);
+
+            string sqlQuery = "INSERT INTO[User](Username, [Password], RoleId) VALUES (@username, @password, @role)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@username", user.UserName);
+                sqlCommand.Parameters.AddWithValue("@password", user.Password);
+                sqlCommand.Parameters.AddWithValue("@role", roleId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
 
         }
     }
