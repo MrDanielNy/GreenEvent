@@ -9,7 +9,7 @@ namespace GreenEvent
 
         private User loggedInUser = null;
         private DataBase database = new DataBase();
-        private User controlUser = null; //user object to check registration
+        private User controlUser = null; //user object to check new registration
 
 
         public void Start()
@@ -188,6 +188,7 @@ namespace GreenEvent
                         Console.WriteLine("Hello!! :)");
                         break;
                     case ConsoleKey.D0:
+                        Console.Clear();
                         loggedInUser = null;
                         running = false;
                         break;
