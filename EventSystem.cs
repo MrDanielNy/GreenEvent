@@ -186,15 +186,16 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        Event.ShowEvent();
+                        Event.CreateNewEvent();
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
+                        Event.ShowEvent();
                         Console.WriteLine("Inte implementerad");
                         break;
                     case ConsoleKey.D3:
                         Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        Event.ShowAllEvents();
                         break;
                     case ConsoleKey.D4:
                         Console.Clear();

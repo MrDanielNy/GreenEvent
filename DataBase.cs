@@ -9,7 +9,36 @@ namespace GreenEvent
     {
         private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
 
+        public List<Event> GetAllEvents()
+        {
+            string sqlQuery = "SELECT * FROM [Event]";
 
+            List<Event> allEvents = new List<Event>(); 
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString)) 
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event myEvent = new Event();
+
+                        myEvent.Id = int.Parse(dataReader["Id"].ToString());
+                        myEvent.Name = dataReader["Name"].ToString();
+
+                        allEvents.Add(myEvent); 
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return allEvents;
+        }
         public Event GetEventByEventId(int id)
         {
             Event myEvent = null;
@@ -41,7 +70,7 @@ namespace GreenEvent
 
                     }
 
-                    myConnection.Close(); // Close connection to the db
+                    myConnection.Close();
                 }
             }
 
