@@ -39,7 +39,7 @@ namespace GreenEvent
                         RegisterNewUser();
                         ShowMenu();
                         break;
-                    case ConsoleKey.D0:
+                    case ConsoleKey.Escape:
                         running = false;
                         break;
                 }
@@ -106,7 +106,7 @@ namespace GreenEvent
         /// </summary>
         private void LogIn()
         {
-           
+            Console.Clear();
             while (loggedInUser == null)
             {
                 Console.Write("Write your username: ");
@@ -137,17 +137,9 @@ namespace GreenEvent
 
             }
 
-            Console.WriteLine($"Login successfull as {loggedInUser.Role}");
+            Console.WriteLine($"{loggedInUser.Role} är inloggad.");
 
-            if (loggedInUser.Role == "Admin")
-            {
-                ShowMenu();
-            }
-            else
-            {
-                Console.WriteLine("Travelmenu not yet implemented");
-                ShowMenu();
-            }
+            ShowMenu();
 
 
 
@@ -164,18 +156,26 @@ namespace GreenEvent
 
             while (running)
             {
-
+                Console.Clear();
                 //changed exit to 0
                 if(loggedInUser.Role == "Admin")
                 {
-                    Console.WriteLine($"Welcome {loggedInUser.UserName}, showing Admin-menu");
-                    Console.WriteLine("1) Hello");
-                    Console.WriteLine("0) Exit");
+                    Console.WriteLine($"Välkommen {loggedInUser.UserName}, gör ditt val");
+                    Console.WriteLine("1) Skapa event.");
+                    Console.WriteLine("2) Redigera event.");
+                    Console.WriteLine("3) Visa tillgängliga event.");
+                    Console.WriteLine("4) Skapa plats.");
+                    Console.WriteLine("5) Redigera plats.");
+                    Console.WriteLine("6) Skapa admin.");
+                    
+                    Console.WriteLine("Esc för att logga ut.");
                 } else
                 {
-                    Console.WriteLine($"Welcome {loggedInUser.UserName}, showing User-menu");
-                    Console.WriteLine("1) Hello");
-                    Console.WriteLine("0) Exit");
+                    Console.WriteLine($"Välkommen {loggedInUser.UserName}, gör ditt val.");
+                    Console.WriteLine("1) Visa event du anmält dig till.");
+                    Console.WriteLine("2) Visa tillgängliga event.");
+
+                    Console.WriteLine("Esc för att logga ut.");
                 }
                 
 
@@ -185,17 +185,43 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        Console.WriteLine("Hello!! :)");
+                        Console.WriteLine("Inte implementerad");
                         break;
-                    case ConsoleKey.D0:
+                    case ConsoleKey.D2:
+                        Console.Clear();
+                        Console.WriteLine("Inte implementerad");
+                        break;
+                    case ConsoleKey.D3:
+                        Console.Clear();
+                        Console.WriteLine("Inte implementerad");
+                        break;
+                    case ConsoleKey.D4:
+                        Console.Clear();
+                        Console.WriteLine("Inte implementerad");
+                        break;
+                    case ConsoleKey.D5:
+                        Console.Clear();
+                        Console.WriteLine("Inte implementerad");
+                        break;
+                    case ConsoleKey.D6:
+                        Console.Clear();
+                        Console.WriteLine("Inte implementerad");
+                        break;
+                    case ConsoleKey.Escape:
+                        Console.WriteLine("Loggar ut...");
                         Console.Clear();
                         loggedInUser = null;
                         running = false;
+                        break;
+                    default:
+                        Console.WriteLine("Felaktigt val, försök igen.");
                         break;
                 }
 
             }
                                                      
         } //end of showMenu
+
+        
     }
 }
