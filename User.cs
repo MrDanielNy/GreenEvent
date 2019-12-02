@@ -29,16 +29,13 @@ namespace GreenEvent
 
             DataBase db = new DataBase();
 
+            //DataBase.AddUser(newUser);
+            //Skicka newUser till databasen
             db.AddUser(newUser);
 
-            newUser = db.GetUserByUsername(username);
-            //DataBase.AddUser(newUser);
-
-
-
-            //Skicka newUser till databasen
-
             //Hämta tillbaka det nyassignade id:t från databasen och lägg till på newUser.Id
+            newUser = db.GetUserByUsername(username);
+            
 
             return newUser;
         }
