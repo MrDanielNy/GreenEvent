@@ -47,6 +47,7 @@ namespace GreenEvent
             
         }// end Start
 
+       
         /// <summary>
         /// method to send data for register new User
         /// </summary>
@@ -185,7 +186,7 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        Event.ShowEvent();
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();

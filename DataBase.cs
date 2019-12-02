@@ -9,6 +9,77 @@ namespace GreenEvent
     {
         private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
 
+
+        public Event GetEventByEventId(int id)
+        {
+            Event myEvent = null;
+            int locationId = 0;
+
+            string sqlQuery = "SELECT * FROM [Event] WHERE [Id] = @id";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection); 
+
+                sqlCommand.Parameters.AddWithValue("@id", id);
+
+                myConnection.Open(); 
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    if (dataReader.Read())
+                    {
+                        myEvent = new Event();
+
+                        myEvent.Id = int.Parse(dataReader["Id"].ToString());
+                        myEvent.Name = dataReader["Name"].ToString();
+                        myEvent.Description = dataReader["Description"].ToString();
+                        myEvent.Date = dataReader["Date"].ToString();
+                        myEvent.Time = dataReader["Time"].ToString();
+                        myEvent.Price = int.Parse(dataReader["Price"].ToString());
+                        locationId = int.Parse(dataReader["LocationId"].ToString());
+
+                    }
+
+                    myConnection.Close(); // Close connection to the db
+                }
+            }
+
+            if (myEvent != null)
+            {
+                myEvent.Location = GetLocationNameById(locationId);
+            }
+
+            return myEvent;
+        }
+
+        private string GetLocationNameById(int locationId)
+        {
+            string locationName = "";
+            string sqlQuery = "SELECT Name FROM [Location] WHERE Id = @locationId";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@locationId", locationId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    if (dataReader.Read())
+                    {
+                        locationName = dataReader["Name"].ToString();
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+
+            return locationName;
+        }
+
         public User GetUserByUsername(string username)
         {
             string sqlQuery = "SELECT * FROM [User] WHERE [Username] LIKE @username"; // Query to run against the DB
