@@ -49,10 +49,36 @@ namespace GreenEvent
         public string Location { get; set; } = "plats där eventet ska hållas"; //Location change nr 3
         public int LocationId { get; set; }
 
-
+        public DataBase database = new DataBase();
 
         public void ShowEvent()
         {
+            List<User> users = database.GetUsersByEventId(this.Id);
+
+            CreateNewEvent(7);
+
+            Console.SetCursorPosition(60, 0);
+            Console.Write("Användare som har joinat detta event");
+
+            if (users.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.SetCursorPosition(62, 3);
+                Console.Write("Inga användare har joinat än");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                for (int i = 0; i < users.Count ; i++)
+                {
+                    Console.SetCursorPosition(74, i + 2);
+                    Console.Write(users[i].UserName);
+                }
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ReadLine();
 
         }
 
@@ -64,18 +90,22 @@ namespace GreenEvent
             {
                 CreateNewEvent(7);
 
-                Console.WriteLine("Vill du redigera något?");
+                Console.WriteLine("Vad vill du redigera?\n");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("1) Namn");
                 Console.WriteLine("2) Beskrivning");
                 Console.WriteLine("3) Plats");
                 Console.WriteLine("4) Datum");
                 Console.WriteLine("5) Tid");
-                Console.WriteLine("6) Pris");
+                Console.WriteLine("6) Pris\n");
+
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine("T) Ta bort event");
-                Console.WriteLine("S) Spara ändringar");
-                Console.WriteLine("Gå tillbaka med esc..");
+                Console.WriteLine("S) Spara ändringar\n");
+                
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Gå tillbaka utan att spara med esc..");
+                
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
 
@@ -106,9 +136,11 @@ namespace GreenEvent
                         CreateNewEvent(6);
                         break;
                     case ConsoleKey.S:
-                        DataBase database = new DataBase();
                         database.EditEvent(this);
                         isRunning = false;
+                        break;
+                    case ConsoleKey.T:
+                        isRunning = DeleteEvent(this.Id);
                         break;
                     case ConsoleKey.Escape:
                         Console.Clear();
@@ -124,7 +156,29 @@ namespace GreenEvent
         }
         
         
-        
+        private bool DeleteEvent(int eventId)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Är du säker på att du vill ta bort eventet?");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("J) Ta bort");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("N) Ångra");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            ConsoleKey userChoice = Console.ReadKey().Key;
+
+            if (userChoice == ConsoleKey.J)
+            {
+                database.DeleteEvent(eventId);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
         
         /// <summary>
         /// originally for just creating event but changed til also view and edit
@@ -133,7 +187,6 @@ namespace GreenEvent
         /// <param name="createTurn"></param>
         public void CreateNewEvent(int createTurn)
         {
-            DataBase database = new DataBase();
             var locationNames = database.GetAllLocations(); //create list of locations
             if (locationNames.Count == 0)  //if no locations return to menu
             {
@@ -143,7 +196,7 @@ namespace GreenEvent
             }
 
             bool isCreating = true; //while event is being created
-            bool isEditing = true; //if event is being edited
+            bool isEditing = true; //if event is being edited or showed
 
 
             if (createTurn == 0)
@@ -173,7 +226,7 @@ namespace GreenEvent
                 }
                 else if (isEditing && createTurn == 7)
                 {
-                    Console.WriteLine("----<<<<<<Mitt event>>>>>>----");
+                    Console.WriteLine("----<<<<<<Valt event>>>>>>----");
                 }
                 else
                 {
@@ -372,11 +425,11 @@ namespace GreenEvent
         {
             Location location = new Location();
             bool isSelecting = true; //user is selecting a location
-            int showRow = 0; //What row currently are showing
+            int showRow = 0; //What row of 10 currently showing
             int maxNrLocations = locations.Count -1; //the number of locations in list
             int shownLocation; //the location user picks
-            bool showMore; //if can show 10 locations after
-            bool showLess = false; //if can show 10 locations before
+            bool showMore; //show the next 10 locations
+            bool showLess = false; //show the 10 locations before
             int selectedLocation = -1; //if location not selected this is -1
 
             while (isSelecting)
@@ -540,7 +593,7 @@ namespace GreenEvent
                 }
                 if (showLess)
                 {
-                    Console.Write("<<<<--- Bläddra vänster    ");
+                    Console.Write("<<<<--- Bläddra vänster       ");
                 }
                 if (showMore)
                 {

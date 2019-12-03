@@ -42,6 +42,62 @@ namespace GreenEvent
             return locations;
         }
 
+        public List<User> GetUsersByEventId(int eventId)
+        {
+
+            List<User> users = new List<User>();
+
+            string sqlQuery = "SELECT u.Username, u.[Id] FROM[Join] AS j " +
+                "LEFT JOIN[User] AS u ON j.[UserId] = u.[Id] " +
+                "WHERE j.[EventId] = @id";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@id", eventId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    User user = new User();
+                    user.Id = int.Parse(dataReader["Id"].ToString());
+                    user.UserName = dataReader["Username"].ToString();
+
+                    users.Add(user);
+                }
+
+                myConnection.Close();
+            }
+
+            return users;
+
+        }
+
+
+
+        public void DeleteEvent(int eventId)
+        {
+
+            string sqlQuery = "DELETE FROM [Event] WHERE [Id] = @id";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@id", eventId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+
+        }
+
         public void EditEvent(Event myEvent)
         {
             string sqlQuery = "UPDATE [Event]" +
@@ -64,10 +120,8 @@ namespace GreenEvent
                 using SqlDataReader dataReader = sqlCommand.ExecuteReader();
 
                 myConnection.Close();
+
             }
-
-
-
 
 
             }

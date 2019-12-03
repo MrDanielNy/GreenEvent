@@ -204,7 +204,7 @@ namespace GreenEvent
                         if (eventId != -1)
                         {
                             var myEvent = database.GetEventByEventId(eventId);
-                            myEvent.EditEvent();
+                            myEvent.ShowEvent();
                         }
                         break;
                     case ConsoleKey.D4:
