@@ -188,16 +188,21 @@ namespace GreenEvent
                         Console.Clear();
                         Event newEvent = new Event();
                         newEvent.CreateNewEvent(0);
-                        Console.ReadLine();
+                        newEvent.EditEvent();
+                        database.AddEvent(newEvent);
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
-                        Event.ShowEvent();
                         Console.WriteLine("Inte implementerad");
                         break;
                     case ConsoleKey.D3:
                         Console.Clear();
-                        Event.ShowAllEvents();
+                        int eventId = Event.ShowAllEvents();
+                        if (eventId != -1)
+                        {
+                            var myEvent = database.GetEventByEventId(eventId);
+                            myEvent.EditEvent();
+                        }
                         break;
                     case ConsoleKey.D4:
                         Console.Clear();

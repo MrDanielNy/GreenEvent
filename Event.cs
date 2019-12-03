@@ -8,12 +8,12 @@ namespace GreenEvent
     class Event
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; } = "en liten beskrivning";
+        public string Name { get; set; } //Name change nr 1
+        public string Description { get; set; } = "en liten beskrivning"; //Description change nr 2
         
         //when getting data from database trim the string
         //for a nice output
-        private string _date = "2019-01-01";
+        private string _date = "2019-01-01"; //Date change nr 4
         public string Date {
             get => _date;
             set
@@ -29,7 +29,7 @@ namespace GreenEvent
             }
         }
         //when getting data from database trim the string..
-        private string _time = "00:00";
+        private string _time = "00:00";     //Time change nr 5
         public string Time {
             get => _time;
             set
@@ -45,50 +45,82 @@ namespace GreenEvent
                 }
             } 
         }
-        public int Price { get; set; }
-        public string Location { get; set; } = "plats där eventet ska hållas";
+        public int Price { get; set; } //Price change nr 6
+        public string Location { get; set; } = "plats där eventet ska hållas"; //Location change nr 3
         public int LocationId { get; set; }
 
 
-        /// <summary>
-        /// this is only for testing
-        /// </summary>
-        static public void ShowEvent()
+        public void EditEvent()
         {
-            DataBase db = new DataBase();
-            var myEvent = db.GetEventByEventId(3);
+            bool isRunning = true;
 
-            Console.WriteLine(myEvent.Name);
-            Console.WriteLine(myEvent.Description);
-            Console.WriteLine(myEvent.Date);
-            Console.WriteLine(myEvent.Time);
-            Console.WriteLine(myEvent.Price);
-            Console.WriteLine(myEvent.Location);
-            Console.ReadLine();
+            while (isRunning)
+            {
+                CreateNewEvent(7);
+
+                Console.WriteLine("Vill du redigera något?");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("1) Namn");
+                Console.WriteLine("2) Beskrivning");
+                Console.WriteLine("3) Plats");
+                Console.WriteLine("4) Datum");
+                Console.WriteLine("5) Tid");
+                Console.WriteLine("6) Pris");
+                Console.WriteLine("0) Ta bort event");
+                Console.WriteLine("Gå tillbaks med esc..");
+                Console.ForegroundColor = ConsoleColor.White;
+
+                ConsoleKey userChoice = Console.ReadKey().Key;
+
+                switch (userChoice)
+                {
+                    case ConsoleKey.D1:
+                        this.Name = "";
+                        CreateNewEvent(1);
+                        break;
+                    case ConsoleKey.D2:
+                        this.Description = "";
+                        CreateNewEvent(2);
+                        break;
+                    case ConsoleKey.D3:
+                        this.Location = "";
+                        CreateNewEvent(3);
+                        break;
+                    case ConsoleKey.D4:
+                        this.Date = "";
+                        CreateNewEvent(4);
+                        break;
+                    case ConsoleKey.D5:
+                        this.Time = "";
+                        CreateNewEvent(5);
+                        break;
+                    case ConsoleKey.D6:
+                        this.Price = 0;
+                        CreateNewEvent(6);
+                        break;
+                    case ConsoleKey.Escape:
+                        Console.Clear();
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.Clear();
+                        break;
+                }
+            }
+           
+
+
+
+
+
+
 
         }
-
-        static public void ShowAllEvents()
-        {
-            DataBase database = new DataBase();
-            var allEvents = database.GetAllEvents(); //create list of events..
-
-            //check if there is any events to list
-            if (allEvents.Count == 0)
-            {
-                Console.WriteLine("Det finns inga event...");
-                Console.ReadLine();
-                return;
-            }
-
-            foreach (var myEvent in allEvents)
-            {
-                Console.WriteLine(myEvent.Name);
-            }
-            Console.ReadLine();
-
-        }
-
+        
+        
+        
+        
+        
         public void CreateNewEvent(int createTurn)
         {
             DataBase database = new DataBase();
@@ -128,6 +160,10 @@ namespace GreenEvent
                 if (!isEditing)
                 {
                     Console.WriteLine("----<<<Skapa ett nytt event>>>----");
+                }
+                else if (isEditing && createTurn == 7)
+                {
+                    Console.WriteLine("----<<<<<<Mitt event>>>>>>----");
                 }
                 else
                 {
@@ -173,7 +209,7 @@ namespace GreenEvent
                     case 1: //fill in name of event
                         Console.SetCursorPosition(16, 1);
                         string name = Console.ReadLine();
-                        isNameCorrect = (name.Length > 3);
+                        isNameCorrect = (name.Length > 3 && name.Length < 31);
                         
                         if (isNameCorrect)
                         {
@@ -243,6 +279,10 @@ namespace GreenEvent
                     case 6: //fill in price
                         Console.SetCursorPosition(16, 6);
                         string price = Console.ReadLine();
+                        if (price == "")
+                        {
+                            price = "0";
+                        }
                         isPriceCorrect = int.TryParse(price, out int myPrice);
                         if (isPriceCorrect)
                         {
@@ -261,7 +301,7 @@ namespace GreenEvent
                 {
                     Console.SetCursorPosition(22, 1);
                     Console.ForegroundColor = red;
-                    Console.Write("måste innehålla minst 4 tecken");
+                    Console.Write("namnet ska innehålla minst 4 och högst 30 tecken");
                     Console.ReadLine();
                     this.Name = "";
                     Console.ForegroundColor = white;
@@ -295,6 +335,7 @@ namespace GreenEvent
                     Console.ForegroundColor = white;
                 }
 
+                Console.SetCursorPosition(0, 9);
 
                 createTurn++;
                 if (isEditing && isNameCorrect && isDateCorrect && isTimeCorrect && isPriceCorrect)
@@ -339,7 +380,7 @@ namespace GreenEvent
                     selectionNr++;
                     shownLocation++;
                     
-                    if ((selectionNr + 1) % 10 == 0 && shownLocation != maxNrLocations) //when 10 locations are shown break the loop
+                    if (selectionNr % 10 == 0 && shownLocation - 1 != maxNrLocations) //when 10 locations are shown break the loop
                     {
                         showMore = true;
                         break;
@@ -347,11 +388,11 @@ namespace GreenEvent
                 }
                 if (showMore || showLess)
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.ForegroundColor = ConsoleColor.Red;
                 }
                 if (showLess)
                 {
-                    Console.Write("<<<<--- Bläddra vänster\t\t");
+                    Console.Write("<<<<--- Bläddra vänster\t");
                 }
                 if (showMore)
                 {
@@ -428,6 +469,168 @@ namespace GreenEvent
 
 
             return location;
+            
+        }
+        public static int ShowAllEvents()
+        {
+            int eventId; //return if event is selected,  -1 if not
+            DataBase database = new DataBase();
+            var allEvents = database.GetAllEvents(); //create list of events..
+
+            //check if there is any events to list
+            if (allEvents.Count == 0)
+            {
+                Console.WriteLine("Det finns inga event...");
+                Console.ReadLine();
+                return -1;
+            }
+
+            bool isSelecting = true; //user is selecting an event
+            int showRow = 0; //What 10 events currently are showing
+            int maxNrEvents = allEvents.Count - 1; //the number of locations in list 0-based
+            int usersPick; //the event user picks with showRow to get correct indexnumber
+            bool showMore; //shows the ten foremost events
+            bool showLess = false; //shows the 10 later events
+            int selectedEvent = -1; //if event not selected this is -1
+
+            while (isSelecting)
+            {
+                Console.Clear();
+                Console.WriteLine("Välj ett event eller ecs för att gå tillbaka");
+
+                showMore = false;
+                usersPick = 0 + showRow; //the indexnumber in list
+                int selectionNr = 0; //the number shown in console
+
+
+                //do
+                //{
+                //    Console.ForegroundColor = ConsoleColor.Green;
+                //    Console.Write($"{selectionNr}) {allEvents[usersPick].Name}");
+                //    Console.SetCursorPosition(40, selectionNr + 1);
+                //    Console.WriteLine($"{allEvents[usersPick].Date}");
+                //    selectionNr++;
+                //    usersPick++;
+                //    if (selectionNr % 10 == 0 && usersPick -1 != maxNrEvents) //when 10 events are shown break the loop
+                //    {
+                //        showMore = true;
+                //        break;
+                //    }
+
+                //} while (usersPick <= maxNrEvents); //as long as there are events to show
+
+
+
+
+                while (usersPick <= maxNrEvents) //As long as there are locations to show
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($"{selectionNr}) {allEvents[usersPick].Name}");
+                    Console.SetCursorPosition(44, selectionNr + 1);
+                    Console.WriteLine($"{allEvents[usersPick].Date}");
+                    selectionNr++;
+                    usersPick++;
+                    if (selectionNr % 10 == 0 && usersPick -1 != maxNrEvents) //when 10 locations are shown break the loop
+                    {
+                        showMore = true;
+                        break;
+                    }
+                }
+
+
+                if (showMore || showLess)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                if (showLess)
+                {
+                    Console.Write("<<<<--- Bläddra vänster    ");
+                }
+                if (showMore)
+                {
+                    Console.Write("Bläddra höger------->>>>");
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+
+                ConsoleKey userChoice = Console.ReadKey().Key;
+
+                switch (userChoice)
+                {
+                    case ConsoleKey.D0:
+                        selectedEvent = 0 + showRow;
+                        break;
+                    case ConsoleKey.D1:
+                        selectedEvent = 1 + showRow;
+                        break;
+                    case ConsoleKey.D2:
+                        selectedEvent = 2 + showRow;
+                        break;
+                    case ConsoleKey.D3:
+                        selectedEvent = 3 + showRow;
+                        break;
+                    case ConsoleKey.D4:
+                        selectedEvent = 4 + showRow;
+                        break;
+                    case ConsoleKey.D5:
+                        selectedEvent = 5 + showRow;
+                        break;
+                    case ConsoleKey.D6:
+                        selectedEvent = 6 + showRow;
+                        break;
+                    case ConsoleKey.D7:
+                        selectedEvent = 7 + showRow;
+                        break;
+                    case ConsoleKey.D8:
+                        selectedEvent = 8 + showRow;
+                        break;
+                    case ConsoleKey.D9:
+                        selectedEvent = 9 + showRow;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (showLess)
+                        {
+                            showRow -= 10;
+                            if (showRow == 0) //if showing the first 10 in list
+                            {
+                                showLess = false;
+                            }
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (showMore)
+                        {
+                            showRow += 10; //now we see indexnumber 0+10 in list and so on..
+                            showLess = true;
+                        }
+                        break;
+                    case ConsoleKey.Escape:
+                        isSelecting = false;
+                        break;
+                }
+
+                if (selectedEvent > maxNrEvents) //if picking a number not on the list
+                {
+                    selectedEvent = -1;
+                }
+                else if (selectedEvent >= 0)
+                {
+                    isSelecting = false;
+                }
+
+
+            }// end isSelecting
+
+
+            if (selectedEvent == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                eventId = allEvents[selectedEvent].Id;
+                return eventId;
+            }
+
             
         }
     }

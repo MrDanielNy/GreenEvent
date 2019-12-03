@@ -61,6 +61,7 @@ namespace GreenEvent
 
                         myEvent.Id = int.Parse(dataReader["Id"].ToString());
                         myEvent.Name = dataReader["Name"].ToString();
+                        myEvent.Date = dataReader["Date"].ToString();
 
                         allEvents.Add(myEvent); 
                     }
@@ -228,6 +229,28 @@ namespace GreenEvent
                 sqlCommand.Parameters.AddWithValue("@username", user.UserName);
                 sqlCommand.Parameters.AddWithValue("@password", user.Password);
                 sqlCommand.Parameters.AddWithValue("@role", roleId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+        }
+        public void AddEvent(Event newEvent)
+        {
+            string sqlQuery = "INSERT INTO[Event]( [Name], [Description], [Date], [LocationId], [Price], [Time])" +
+                " VALUES (@name, @description, @date, @locationId, @price, @time)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@name", newEvent.Name);
+                sqlCommand.Parameters.AddWithValue("@description", newEvent.Description);
+                sqlCommand.Parameters.AddWithValue("@date", newEvent.Date);
+                sqlCommand.Parameters.AddWithValue("@locationId", newEvent.LocationId);
+                sqlCommand.Parameters.AddWithValue("@price", newEvent.Price);
+                sqlCommand.Parameters.AddWithValue("@time", newEvent.Time);
 
                 myConnection.Open();
 
