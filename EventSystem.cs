@@ -188,15 +188,22 @@ namespace GreenEvent
                     //Jonas
 
                 }
-                //List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
-                string userEvents = database.GetEventNameByUser(loggedInUser.Id);
-                
-/*
+                //Events user is assigned to
+                List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
+
                 foreach (string s in userEvents)
                 {
-                    Console.WriteLine(userEvents);
+                    Console.WriteLine(s);
                 }
-                */
+                //Events user is not assigned to
+                List<string> userAvailableEvents = database.GetAvailableEvents(loggedInUser.Id);
+
+                foreach (string s in userAvailableEvents)
+                {
+                    Console.WriteLine(s);
+                }
+
+
                 //Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
 
                 ConsoleKey userChoice = Console.ReadKey().Key;

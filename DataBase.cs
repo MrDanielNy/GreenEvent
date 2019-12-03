@@ -108,11 +108,12 @@ namespace GreenEvent
         }
 
         //Jonas
-        public string GetEventNameByUser(int userId)
+        public List<string> GetEventNameByUser(int userId)
         {
             string sqlQuery = "SELECT [Event].[Name] FROM [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId";
-            //string eventName = "";
+     
             List<string> eventName = new List<String>();
+
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
@@ -131,9 +132,56 @@ namespace GreenEvent
                 }
             }
            
-            return eventName.ToString();
+            return eventName;
 
         }
+        //
+        public List<string> GetAvailableEvents(int userId)
+        {
+            string sqlQuery = "select [Name] from [Event] where [Event].Id not in (select [Event].Id from [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId)";
+
+            List<string> eventName = new List<String>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        eventName.Add(dataReader["Name"].ToString());
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return eventName;
+
+        }
+        //
+
+        private void JoinEvent(int userId, Join join)
+        {
+            string sqlQuery = "INSERT INTO[Join](Accepted, EventID, UserId) VALUES (1, @eventid, @userId)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@eventid", join.EventId);
+                sqlCommand.Parameters.AddWithValue("@userId", join.UserId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+        }
+
         //Jonas
     }
 }
