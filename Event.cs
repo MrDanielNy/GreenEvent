@@ -500,9 +500,9 @@ namespace GreenEvent
                 return -1;
             }
 
-            bool isSelecting = true; //user is selecting an event
-            int showRow = 0; //What 10 events currently are showing
-            int maxNrEvents = allEvents.Count - 1; //the number of locations in list 0-based
+            bool isSelecting = true; //user is looking at events
+            int showRow = 0; //Which 10 events currently showing
+            int maxNrEvents = allEvents.Count - 1; //the number of events in list 0-based
             int usersPick; //the event user picks with showRow to get correct indexnumber
             bool showMore; //shows the ten foremost events
             bool showLess = false; //shows the 10 later events
@@ -516,25 +516,6 @@ namespace GreenEvent
                 showMore = false;
                 usersPick = 0 + showRow; //the indexnumber in list
                 int selectionNr = 0; //the number shown in console
-
-
-                //do
-                //{
-                //    Console.ForegroundColor = ConsoleColor.Green;
-                //    Console.Write($"{selectionNr}) {allEvents[usersPick].Name}");
-                //    Console.SetCursorPosition(40, selectionNr + 1);
-                //    Console.WriteLine($"{allEvents[usersPick].Date}");
-                //    selectionNr++;
-                //    usersPick++;
-                //    if (selectionNr % 10 == 0 && usersPick -1 != maxNrEvents) //when 10 events are shown break the loop
-                //    {
-                //        showMore = true;
-                //        break;
-                //    }
-
-                //} while (usersPick <= maxNrEvents); //as long as there are events to show
-
-
 
 
                 while (usersPick <= maxNrEvents) //As long as there are locations to show
