@@ -187,8 +187,7 @@ namespace GreenEvent
                     case ConsoleKey.D1:
                         Console.Clear();
                         Event newEvent = new Event();
-                        newEvent.CreateNewEvent(0);
-                        database.AddEvent(newEvent);
+                        newEvent.ModifyEvent(0);
                         break;
                     case ConsoleKey.D2:
                         eventId = Event.ShowAllEvents();

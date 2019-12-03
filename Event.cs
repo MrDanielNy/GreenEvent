@@ -55,15 +55,15 @@ namespace GreenEvent
         {
             List<User> users = database.GetUsersByEventId(this.Id);
 
-            CreateNewEvent(7);
+            ModifyEvent(7);
 
             Console.SetCursorPosition(60, 0);
-            Console.Write("Användare som har joinat detta event");
+            Console.Write("--<<Användare som har joinat detta event>>--");
 
             if (users.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.SetCursorPosition(62, 3);
+                Console.SetCursorPosition(67, 3);
                 Console.Write("Inga användare har joinat än");
             }
             else
@@ -88,7 +88,7 @@ namespace GreenEvent
 
             while (isRunning)
             {
-                CreateNewEvent(7);
+                ModifyEvent(7);
 
                 Console.WriteLine("Vad vill du redigera?\n");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -104,7 +104,7 @@ namespace GreenEvent
                 Console.WriteLine("S) Spara ändringar\n");
                 
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Gå tillbaka utan att spara med esc..");
+                Console.Write("Gå tillbaka utan att spara med esc..");
                 
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
@@ -113,27 +113,27 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         this.Name = "";
-                        CreateNewEvent(1);
+                        ModifyEvent(1);
                         break;
                     case ConsoleKey.D2:
                         this.Description = "";
-                        CreateNewEvent(2);
+                        ModifyEvent(2);
                         break;
                     case ConsoleKey.D3:
                         this.Location = "";
-                        CreateNewEvent(3);
+                        ModifyEvent(3);
                         break;
                     case ConsoleKey.D4:
                         this.Date = "";
-                        CreateNewEvent(4);
+                        ModifyEvent(4);
                         break;
                     case ConsoleKey.D5:
                         this.Time = "";
-                        CreateNewEvent(5);
+                        ModifyEvent(5);
                         break;
                     case ConsoleKey.D6:
                         this.Price = 0;
-                        CreateNewEvent(6);
+                        ModifyEvent(6);
                         break;
                     case ConsoleKey.S:
                         database.EditEvent(this);
@@ -185,7 +185,7 @@ namespace GreenEvent
         /// depending on what number you send in (0 for creating, 1-6 for editing and 7 for view
         /// </summary>
         /// <param name="createTurn"></param>
-        public void CreateNewEvent(int createTurn)
+        public void ModifyEvent(int createTurn)
         {
             var locationNames = database.GetAllLocations(); //create list of locations
             if (locationNames.Count == 0)  //if no locations return to menu
@@ -402,7 +402,7 @@ namespace GreenEvent
                     Console.ForegroundColor = white;
                 }
 
-                Console.SetCursorPosition(0, 9);
+                Console.SetCursorPosition(0, 10);
 
                 createTurn++;
 
@@ -411,6 +411,28 @@ namespace GreenEvent
                     isCreating = false;
                 }
                 
+            }
+
+            if (!isEditing)
+            {
+                Console.WriteLine("Vill du spara det här eventet?");
+                Console.Write("(J)A / (N)EJ");
+
+                while (true)
+                {
+                    ConsoleKey userChoice = Console.ReadKey().Key;
+
+                    if (userChoice == ConsoleKey.J)
+                    {
+                        database.AddEvent(this);
+                        break;
+                    }
+                    else if (userChoice == ConsoleKey.N)
+                    {
+                        break;
+                    }
+                }
+
             }
 
 
@@ -564,7 +586,7 @@ namespace GreenEvent
             while (isSelecting)
             {
                 Console.Clear();
-                Console.WriteLine("Välj ett event eller ecs för att gå tillbaka");
+                Console.WriteLine("     Välj ett event eller ecs för att gå tillbaka");
 
                 showMore = false;
                 usersPick = 0 + showRow; //the indexnumber in list
