@@ -9,6 +9,38 @@ namespace GreenEvent
     {
         private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
 
+
+
+        public List<Location> GetAllLocations()
+        {
+            List<Location> locations = new List<Location>();
+
+            string sqlQuery = "SELECT * FROM [Location]";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Location location = new Location();
+
+                        location.Id = int.Parse(dataReader["Id"].ToString());
+                        location.Name = dataReader["Name"].ToString();
+                        location.MapLink = dataReader["MapLink"].ToString();
+
+                        locations.Add(location);
+                    }
+                    myConnection.Close();
+                }
+            }
+
+            return locations;
+        }
         public List<Event> GetAllEvents()
         {
             string sqlQuery = "SELECT * FROM [Event]";
@@ -42,7 +74,7 @@ namespace GreenEvent
         public Event GetEventByEventId(int id)
         {
             Event myEvent = null;
-            int locationId = 0;
+            //int locationId = 0;
 
             string sqlQuery = "SELECT * FROM [Event] WHERE [Id] = @id";
 
@@ -66,7 +98,7 @@ namespace GreenEvent
                         myEvent.Date = dataReader["Date"].ToString();
                         myEvent.Time = dataReader["Time"].ToString();
                         myEvent.Price = int.Parse(dataReader["Price"].ToString());
-                        locationId = int.Parse(dataReader["LocationId"].ToString());
+                        myEvent.LocationId = int.Parse(dataReader["LocationId"].ToString());
 
                     }
 
@@ -76,7 +108,7 @@ namespace GreenEvent
 
             if (myEvent != null)
             {
-                myEvent.Location = GetLocationNameById(locationId);
+                myEvent.Location = GetLocationNameById(myEvent.LocationId);
             }
 
             return myEvent;
