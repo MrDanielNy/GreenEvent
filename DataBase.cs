@@ -74,7 +74,6 @@ namespace GreenEvent
         public Event GetEventByEventId(int id)
         {
             Event myEvent = null;
-            //int locationId = 0;
 
             string sqlQuery = "SELECT * FROM [Event] WHERE [Id] = @id";
 

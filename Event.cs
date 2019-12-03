@@ -110,8 +110,8 @@ namespace GreenEvent
                 isEditing = false; //creating a new Event
             }
 
-
-
+            
+            bool isNameCorrect = true;
             bool isDateCorrect = true;
             bool isTimeCorrect = true;
             bool isPriceCorrect = true;
@@ -172,10 +172,21 @@ namespace GreenEvent
                     
                     case 1: //fill in name of event
                         Console.SetCursorPosition(16, 1);
-                        this.Name = Console.ReadLine();
-                        if (!isEditing)
+                        string name = Console.ReadLine();
+                        isNameCorrect = (name.Length > 3);
+                        
+                        if (isNameCorrect)
                         {
-                            this.Description = ""; //clear field for nice look
+                            this.Name = name;
+                            if (!isEditing)
+                            {
+                                this.Description = ""; //clear field for nice look
+                            }
+                        }
+                        else
+                        {
+                            isNameCorrect = false;
+                            createTurn--;
                         }
                         break;
                    
@@ -232,7 +243,7 @@ namespace GreenEvent
                     case 6: //fill in price
                         Console.SetCursorPosition(16, 6);
                         string price = Console.ReadLine();
-                        isPriceCorrect = Int32.TryParse(price, out int myPrice);
+                        isPriceCorrect = int.TryParse(price, out int myPrice);
                         if (isPriceCorrect)
                         {
                             this.Price = myPrice;
@@ -245,6 +256,15 @@ namespace GreenEvent
                     case 7:
                         isCreating = false;
                         break;
+                }
+                if (!isNameCorrect)
+                {
+                    Console.SetCursorPosition(22, 1);
+                    Console.ForegroundColor = red;
+                    Console.Write("måste innehålla minst 4 tecken");
+                    Console.ReadLine();
+                    this.Name = "";
+                    Console.ForegroundColor = white;
                 }
 
                 if (!isDateCorrect)
@@ -277,7 +297,7 @@ namespace GreenEvent
 
 
                 createTurn++;
-                if (isEditing)
+                if (isEditing && isNameCorrect && isDateCorrect && isTimeCorrect && isPriceCorrect)
                 {
                     createTurn = 7;
                 }
@@ -301,7 +321,7 @@ namespace GreenEvent
             int shownLocation; //the location user picks
             bool showMore; //if can show 10 locations after
             bool showLess = false; //if can show 10 locations before
-            int selectedLocation = -1; //if location not selected this is negative
+            int selectedLocation = -1; //if location not selected this is -1
 
             while (isSelecting)
             {
@@ -319,7 +339,7 @@ namespace GreenEvent
                     selectionNr++;
                     shownLocation++;
                     
-                    if (selectionNr % 10 == 0 && shownLocation != maxNrLocations) //when 10 locations are shown break the loop
+                    if ((selectionNr + 1) % 10 == 0 && shownLocation != maxNrLocations) //when 10 locations are shown break the loop
                     {
                         showMore = true;
                         break;
