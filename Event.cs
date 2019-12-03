@@ -50,6 +50,12 @@ namespace GreenEvent
         public int LocationId { get; set; }
 
 
+
+        public void ShowEvent()
+        {
+
+        }
+
         public void EditEvent()
         {
             bool isRunning = true;
@@ -59,15 +65,16 @@ namespace GreenEvent
                 CreateNewEvent(7);
 
                 Console.WriteLine("Vill du redigera något?");
-                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("1) Namn");
                 Console.WriteLine("2) Beskrivning");
                 Console.WriteLine("3) Plats");
                 Console.WriteLine("4) Datum");
                 Console.WriteLine("5) Tid");
                 Console.WriteLine("6) Pris");
-                Console.WriteLine("0) Ta bort event");
-                Console.WriteLine("Gå tillbaks med esc..");
+                Console.WriteLine("T) Ta bort event");
+                Console.WriteLine("S) Spara ändringar");
+                Console.WriteLine("Gå tillbaka med esc..");
                 Console.ForegroundColor = ConsoleColor.White;
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
@@ -98,6 +105,11 @@ namespace GreenEvent
                         this.Price = 0;
                         CreateNewEvent(6);
                         break;
+                    case ConsoleKey.S:
+                        DataBase database = new DataBase();
+                        database.EditEvent(this);
+                        isRunning = false;
+                        break;
                     case ConsoleKey.Escape:
                         Console.Clear();
                         isRunning = false;
@@ -109,18 +121,16 @@ namespace GreenEvent
             }
            
 
-
-
-
-
-
-
         }
         
         
         
         
-        
+        /// <summary>
+        /// originally for just creating event but changed til also view and edit
+        /// depending on what number you send in (0 for creating, 1-6 for editing and 7 for view
+        /// </summary>
+        /// <param name="createTurn"></param>
         public void CreateNewEvent(int createTurn)
         {
             DataBase database = new DataBase();
@@ -249,7 +259,11 @@ namespace GreenEvent
                         {
                             string correctDate = myDate.ToString();
                             this.Date = correctDate;
-                            this.Time = "";
+                            if (!isEditing)
+                            {
+                                this.Time = "";
+                            }
+                            
                         }
                         else
                         {
@@ -338,9 +352,10 @@ namespace GreenEvent
                 Console.SetCursorPosition(0, 9);
 
                 createTurn++;
+
                 if (isEditing && isNameCorrect && isDateCorrect && isTimeCorrect && isPriceCorrect)
                 {
-                    createTurn = 7;
+                    isCreating = false;
                 }
                 
             }
@@ -350,7 +365,7 @@ namespace GreenEvent
 
        
         /// <summary>
-        /// method for set location data to event
+        /// method for set location to event
         /// </summary>
         /// <param name="locations"></param>
         private static Location SetLocationForEvent(List<Location> locations)

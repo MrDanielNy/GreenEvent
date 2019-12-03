@@ -41,6 +41,37 @@ namespace GreenEvent
 
             return locations;
         }
+
+        public void EditEvent(Event myEvent)
+        {
+            string sqlQuery = "UPDATE [Event]" +
+                " SET [Name] = @name, [Description] = @description, [Date] = @date, [LocationId] = @locationId, " +
+                "[Price] = @price, [Time] = @time " +
+                "WHERE [Id] = @id";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@name", myEvent.Name);
+                sqlCommand.Parameters.AddWithValue("@description", myEvent.Description);
+                sqlCommand.Parameters.AddWithValue("@date", myEvent.Date);
+                sqlCommand.Parameters.AddWithValue("@locationId", myEvent.LocationId);
+                sqlCommand.Parameters.AddWithValue("@price", myEvent.Price);
+                sqlCommand.Parameters.AddWithValue("@time", myEvent.Time);
+                sqlCommand.Parameters.AddWithValue("@id", myEvent.Id);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+
+
+
+
+            }
+        
         public List<Event> GetAllEvents()
         {
             string sqlQuery = "SELECT * FROM [Event]";

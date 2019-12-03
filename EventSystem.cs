@@ -10,7 +10,7 @@ namespace GreenEvent
         private User loggedInUser = null;
         private DataBase database = new DataBase();
         private User controlUser = null; //user object to check new registration
-
+        public int eventId; //id for getting event
 
         public void Start()
         {
@@ -188,16 +188,19 @@ namespace GreenEvent
                         Console.Clear();
                         Event newEvent = new Event();
                         newEvent.CreateNewEvent(0);
-                        newEvent.EditEvent();
                         database.AddEvent(newEvent);
                         break;
                     case ConsoleKey.D2:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        eventId = Event.ShowAllEvents();
+                        if (eventId != -1)
+                        {
+                            var myEvent = database.GetEventByEventId(eventId);
+                            myEvent.EditEvent();
+                        }
                         break;
                     case ConsoleKey.D3:
                         Console.Clear();
-                        int eventId = Event.ShowAllEvents();
+                        eventId = Event.ShowAllEvents();
                         if (eventId != -1)
                         {
                             var myEvent = database.GetEventByEventId(eventId);
