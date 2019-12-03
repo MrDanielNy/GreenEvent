@@ -141,8 +141,6 @@ namespace GreenEvent
 
             ShowMenu();
 
-
-
         }
 
         //This function is not completed
@@ -150,7 +148,18 @@ namespace GreenEvent
         /// ShowMenu
         /// </summary>
         /// <returns></returns>
-        private void ShowMenu()
+        /// 
+        /*
+        private void ShowEventsByUser()
+        {
+            
+                Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
+            
+             
+           
+            // ShowMenu();
+        }*/
+    private void ShowMenu()
         {
             bool running = true;
 
@@ -176,8 +185,19 @@ namespace GreenEvent
                     Console.WriteLine("2) Visa tillgängliga event.");
 
                     Console.WriteLine("Esc för att logga ut.");
+                    //Jonas
+
                 }
+                //List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
+                string userEvents = database.GetEventNameByUser(loggedInUser.Id);
                 
+/*
+                foreach (string s in userEvents)
+                {
+                    Console.WriteLine(userEvents);
+                }
+                */
+                //Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
 
@@ -185,12 +205,14 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        //ShowEventsByUser();
+                        //Console.WriteLine("Inte implementerad");
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
                         Console.WriteLine("Inte implementerad");
                         break;
+                        /*
                     case ConsoleKey.D3:
                         Console.Clear();
                         Console.WriteLine("Inte implementerad");
@@ -212,7 +234,7 @@ namespace GreenEvent
                         Console.Clear();
                         loggedInUser = null;
                         running = false;
-                        break;
+                        break;*/
                     default:
                         Console.WriteLine("Felaktigt val, försök igen.");
                         break;

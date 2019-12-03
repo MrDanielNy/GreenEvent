@@ -7,7 +7,7 @@ namespace GreenEvent
 {
     class DataBase
     {
-        private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
+        private readonly string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=GreenEvent;Integrated Security=True";
 
         public User GetUserByUsername(string username)
         {
@@ -106,5 +106,34 @@ namespace GreenEvent
             }
 
         }
+
+        //Jonas
+        public string GetEventNameByUser(int userId)
+        {
+            string sqlQuery = "SELECT [Event].[Name] FROM [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId";
+            //string eventName = "";
+            List<string> eventName = new List<String>();
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        eventName.Add(dataReader["Name"].ToString());
+                    }
+
+                    myConnection.Close();
+                }
+            }
+           
+            return eventName.ToString();
+
+        }
+        //Jonas
     }
 }
