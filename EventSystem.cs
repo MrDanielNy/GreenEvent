@@ -153,6 +153,7 @@ namespace GreenEvent
         private void ShowMenu()
         {
             bool running = true;
+            Location location = new Location();
 
             while (running)
             {
@@ -196,12 +197,10 @@ namespace GreenEvent
                         Console.WriteLine("Inte implementerad");
                         break;
                     case ConsoleKey.D4:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        location.CreateNewLocation();
                         break;
                     case ConsoleKey.D5:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        location.EditLocation();
                         break;
                     case ConsoleKey.D6:
                         Console.Clear();
