@@ -89,12 +89,10 @@ namespace GreenEvent
 
         }
 
-        static public void CreateNewEvent()
+        public void CreateNewEvent(int createTurn)
         {
             DataBase database = new DataBase();
-
             var locationNames = database.GetAllLocations(); //create list of locations
-
             if (locationNames.Count == 0)  //if no locations return to menu
             {
                 Console.WriteLine("Du måste skapa en plats innan du kan skapa ett event..");
@@ -102,10 +100,16 @@ namespace GreenEvent
                 return;
             }
 
-            Event newEvent = new Event(); //new event to set in database
             bool isCreating = true; //while event is being created
-            
-            int createTurn = 1; //witch field user is going to fill in
+            bool isEditing = true; //if event is being edited
+
+
+            if (createTurn == 0)
+            {
+                createTurn = 1; //witch field user is going to fill in
+                isEditing = false; //creating a new Event
+            }
+
 
 
             bool isDateCorrect = true;
@@ -121,36 +125,44 @@ namespace GreenEvent
                 ConsoleColor white = ConsoleColor.White;
                 ConsoleColor red = ConsoleColor.Red;
 
-                Console.WriteLine("----<<<Skapa ett nytt event>>>----");
+                if (!isEditing)
+                {
+                    Console.WriteLine("----<<<Skapa ett nytt event>>>----");
+                }
+                else
+                {
+                    Console.WriteLine("----<<<Redigera ett event>>>----");
+                }
+                
                 Console.ForegroundColor = green;
                 Console.Write("Namn:\t\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Name);
+                Console.WriteLine(this.Name);
 
                 Console.ForegroundColor = green;
                 Console.Write("Beskrivning:\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Description);
+                Console.WriteLine(this.Description);
 
                 Console.ForegroundColor = green;
                 Console.Write("Plats:\t\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Location);
+                Console.WriteLine(this.Location);
 
                 Console.ForegroundColor = green;
                 Console.Write("Datum:\t\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Date);
+                Console.WriteLine(this.Date);
 
                 Console.ForegroundColor = green;
                 Console.Write("Tid:\t\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Time);
+                Console.WriteLine(this.Time);
 
                 Console.ForegroundColor = green;
                 Console.Write("Pris:\t\t");
                 Console.ForegroundColor = white;
-                Console.WriteLine(newEvent.Price);
+                Console.WriteLine(this.Price);
                 
                 Console.WriteLine();
 
@@ -160,20 +172,26 @@ namespace GreenEvent
                     
                     case 1: //fill in name of event
                         Console.SetCursorPosition(16, 1);
-                        newEvent.Name = Console.ReadLine();
-                        newEvent.Description = ""; //clear field for nice look
+                        this.Name = Console.ReadLine();
+                        if (!isEditing)
+                        {
+                            this.Description = ""; //clear field for nice look
+                        }
                         break;
                    
                     case 2:  //fill in description
                         Console.SetCursorPosition(16, 2);
-                        newEvent.Description = Console.ReadLine();
+                        this.Description = Console.ReadLine();
                         break;
                    
                     case 3:  //fill in location
                         var location = SetLocationForEvent(locationNames);
-                        newEvent.Location = location.Name;
-                        newEvent.LocationId = location.Id;
-                        newEvent.Date = "";
+                        this.Location = location.Name;
+                        this.LocationId = location.Id;
+                        if (!isEditing)
+                        {
+                            this.Date = "";
+                        }
                         break;
                     
                     case 4: //fill in date
@@ -183,13 +201,13 @@ namespace GreenEvent
                         if (isDateCorrect && !date.Contains(":"))
                         {
                             string correctDate = myDate.ToString();
-                            newEvent.Date = correctDate;
-                            newEvent.Time = "";
+                            this.Date = correctDate;
+                            this.Time = "";
                         }
                         else
                         {
                             isDateCorrect = false;
-                            newEvent.Date = date;
+                            this.Date = date;
                             createTurn--;
                         }
                         break;
@@ -201,11 +219,11 @@ namespace GreenEvent
                         if (isTimeCorrect && time.Contains(":"))
                         {
                             string correctTime = myTime.ToString();
-                            newEvent.Time = correctTime;
+                            this.Time = correctTime;
                         }
                         else
                         {
-                            newEvent.Time = time;
+                            this.Time = time;
                             isTimeCorrect = false;
                             createTurn--;
                         }
@@ -217,7 +235,7 @@ namespace GreenEvent
                         isPriceCorrect = Int32.TryParse(price, out int myPrice);
                         if (isPriceCorrect)
                         {
-                            newEvent.Price = myPrice;
+                            this.Price = myPrice;
                         }
                         else
                         {
@@ -235,7 +253,7 @@ namespace GreenEvent
                     Console.ForegroundColor = red;
                     Console.Write("felaktigt format, prova ÅÅ-MM-DD");
                     Console.ReadLine();
-                    newEvent.Date = "";
+                    this.Date = "";
                     Console.ForegroundColor = white;
                 }
                 if (!isTimeCorrect)
@@ -244,7 +262,7 @@ namespace GreenEvent
                     Console.ForegroundColor = red;
                     Console.Write("felaktigt format, prova HH:MM");
                     Console.ReadLine();
-                    newEvent.Time = "";
+                    this.Time = "";
                     Console.ForegroundColor = white;
                 }
                 if (!isPriceCorrect)
@@ -253,18 +271,20 @@ namespace GreenEvent
                     Console.ForegroundColor = red;
                     Console.Write("felaktigt format, endast nummer");
                     Console.ReadLine();
-                    newEvent.Date = "";
+                    this.Price = 0;
                     Console.ForegroundColor = white;
                 }
 
 
                 createTurn++;
+                if (isEditing)
+                {
+                    createTurn = 7;
+                }
                 
             }
 
-            Console.WriteLine("Vill du skapa detta event? j/n");
-            Console.ReadLine();
-            
+
         }
 
        

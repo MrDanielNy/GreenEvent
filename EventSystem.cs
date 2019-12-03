@@ -186,7 +186,11 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        Event.CreateNewEvent();
+                        Event newEvent = new Event();
+                        newEvent.CreateNewEvent(0);
+                        Console.ReadLine();
+                        newEvent.CreateNewEvent(3);
+                        Console.ReadLine();
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
