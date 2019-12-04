@@ -104,42 +104,6 @@ namespace GreenEvent
 
             return newUser;
         }
-        public void GetJoinedEvent(int UserId)
-        {
-            //Events user is assigned to
-            DataBase db = new DataBase();
-            List<string> userEvents = db.GetEventNameByUser(UserId);
-            int i = 1;
-            foreach (string s in userEvents)
-            {
-                Console.WriteLine(i + ") " + s);
-                i++;
-            }
-        }
-
-        public void GetAvailableEvent(int UserId)
-        {
-            //Events user is not assigned to
-            DataBase db = new DataBase();
-            var userAvailableEvents = new List<Event>();
-            userAvailableEvents = db.GetAllEvents();
-            //Event userAvailableEvents = new Event();
-            //userAvailableEvents.Name = db.GetAvailableEvents(UserId);
-            int i = 1;
-            foreach (Event currentEvent in userAvailableEvents)
-            {
-                Console.WriteLine(i + ") " + currentEvent.Name);
-                i++;
-            }
-            Console.WriteLine("Chose an event from " + "1 " + "to " + (i-1) +" to join");
-            ConsoleKeyInfo tempChoice = Console.ReadKey();
-
-            int userChoice = int.Parse(tempChoice.KeyChar.ToString());
-            db.JoinEvent(UserId, userChoice);
-           
-        }
-
-        
     }
 
 }
