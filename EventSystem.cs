@@ -196,19 +196,8 @@ namespace GreenEvent
                         {
                             var myEvent = database.GetEventByEventId(eventId);
                             myEvent.EditEvent();
+                        }
                         if(loggedInUser.Role == "Admin")
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Inte implementerad adminmeny");
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Inte implementerad usermenyu");
-                        }
-                        break;
-                    case ConsoleKey.D2:
-                        if (loggedInUser.Role == "Admin")
                         {
                             Console.Clear();
                             Console.WriteLine("Inte implementerad adminmeny");

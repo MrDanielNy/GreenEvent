@@ -10,7 +10,7 @@ namespace GreenEvent
         private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
 
 
-
+/*
         public List<Location> GetAllLocations()
         {
             List<Location> locations = new List<Location>();
@@ -40,7 +40,7 @@ namespace GreenEvent
             }
 
             return locations;
-        }
+        } */
 
         public List<User> GetUsersByEventId(int eventId)
         {
@@ -124,7 +124,7 @@ namespace GreenEvent
             }
 
 
-            }
+        }
         
         public List<Event> GetAllEvents()
         {
@@ -336,6 +336,16 @@ namespace GreenEvent
                 sqlCommand.Parameters.AddWithValue("@locationId", newEvent.LocationId);
                 sqlCommand.Parameters.AddWithValue("@price", newEvent.Price);
                 sqlCommand.Parameters.AddWithValue("@time", newEvent.Time);
+                
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+        }
+
 
         /// <summary>
         /// Adds a new location to the database
