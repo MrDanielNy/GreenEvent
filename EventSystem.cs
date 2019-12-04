@@ -134,26 +134,31 @@ namespace GreenEvent
                 switch (userChoice)
                 {
                     case ConsoleKey.D1:
-                        Console.Clear();
-                        Event newEvent = new Event();
-                        newEvent.ModifyEvent(0);
-                        break;
-                    case ConsoleKey.D2:
-                        eventId = Event.ShowAllEvents();
-                        if (eventId != -1)
-                        {
-                            var myEvent = database.GetEventByEventId(eventId);
-                            myEvent.EditEvent();
-                        }
-                        if(loggedInUser.Role == "Admin")
+                        if (loggedInUser.Role == "Admin")
                         {
                             Console.Clear();
-                            Console.WriteLine("Inte implementerad adminmeny");
+                            Event newEvent = new Event();
+                            newEvent.ModifyEvent(0);
                         }
                         else
                         {
-                            Console.Clear();
-                            Console.WriteLine("Inte implementerad usermenyu");
+                            User.GetJoinedEvent(loggedInUser.Id);
+                        }
+                        break;
+                    case ConsoleKey.D2:
+                        
+                        if(loggedInUser.Role == "Admin")
+                        {
+                            eventId = Event.ShowAllEvents();
+                            if (eventId != -1)
+                            {
+                                var myEvent = database.GetEventByEventId(eventId);
+                                myEvent.EditEvent();
+                            }
+                        }
+                        else
+                        {
+                            User.GetAvailableEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D3:
