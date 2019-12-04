@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-<<<<<<< HEAD
 using System.Linq;
-=======
->>>>>>> parent of 0189f39... Funktioner fungerar
 
 namespace GreenEvent
 {
     class Event
     {
-<<<<<<< HEAD
         public int Id { get; set; }
         public string Name { get; set; } //Name change nr 1
         public string Description { get; set; } = "en liten beskrivning"; //Description change nr 2
@@ -708,14 +704,5 @@ namespace GreenEvent
 
             
         }
-=======
-        public int Id;
-        public string Name;
-        public string Description;
-        public int Price;
-        public DateTime Date;
-        public DateTime Time;
-        public int LocationId;
->>>>>>> parent of 0189f39... Funktioner fungerar
     }
 }

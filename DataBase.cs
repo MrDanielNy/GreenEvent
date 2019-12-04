@@ -499,25 +499,16 @@ namespace GreenEvent
             return posts;
         }
 
-<<<<<<< HEAD
            
         public void AddAdminPost(AdminPost adminPost) 
-=======
-        private void JoinEvent(int userId, Join join)
->>>>>>> parent of 0189f39... Funktioner fungerar
         {
             string sqlQuery = "INSERT INTO[Post](Body, UserId, EventId) VALUES (@body, @userid, @eventid)";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-<<<<<<< HEAD
                 sqlCommand.Parameters.AddWithValue("@body", adminPost.Body);
                 sqlCommand.Parameters.AddWithValue("@userid", adminPost.UserId);
                 sqlCommand.Parameters.AddWithValue("@eventid", adminPost.EventId);
-=======
-                sqlCommand.Parameters.AddWithValue("@eventid", join.EventId);
-                sqlCommand.Parameters.AddWithValue("@userId", join.UserId);
->>>>>>> parent of 0189f39... Funktioner fungerar
 
                 myConnection.Open();
 
@@ -525,7 +516,6 @@ namespace GreenEvent
 
                 myConnection.Close();
             }
-<<<<<<< HEAD
         }
 
         /// <summary>
@@ -554,10 +544,6 @@ namespace GreenEvent
                 }
             }
             return locations;
-=======
->>>>>>> parent of 0189f39... Funktioner fungerar
         }
-
-        //Jonas
     }
 }
