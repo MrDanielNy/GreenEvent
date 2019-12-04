@@ -185,12 +185,28 @@ namespace GreenEvent
                 switch (userChoice)
                 {
                     case ConsoleKey.D1:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        if(loggedInUser.Role == "Admin")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad adminmeny");
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad usermenyu");
+                        }
                         break;
                     case ConsoleKey.D2:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        if (loggedInUser.Role == "Admin")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad adminmeny");
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad usermenyu");
+                        }
                         break;
                     case ConsoleKey.D3:
                         Console.Clear();
