@@ -76,8 +76,6 @@ namespace GreenEvent
 
         }
 
-
-
         public void DeleteEvent(int eventId)
         {
 
@@ -94,7 +92,6 @@ namespace GreenEvent
 
                 myConnection.Close();
             }
-
 
         }
 
@@ -262,7 +259,6 @@ namespace GreenEvent
             {
                 user.Role = GetRoleNameById(userRoleId); //set user role from database
             }
-
 
             return user; // Return the user
         }
