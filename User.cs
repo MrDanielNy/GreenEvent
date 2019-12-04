@@ -10,21 +10,79 @@ namespace GreenEvent
         public string UserName;
         public string Password;
         public string Role;
+        User controlUser = null; //user object to check new registration
 
-        
+
         public bool CheckPassword(string password)
         {
             return Password == password;
         }
 
+        /// <summary>
+        /// method to send data for register new User
+        /// </summary>
+        public User RegisterNewUser(string rolename)
+        {
 
-        static public User CreateUser(string username, string password)
+            string newUsername; //var for new users name
+            string newPassword; //var for new users password
+            DataBase dataBase = new DataBase();
+
+
+            bool tryInput; //if new input is incorrect bool will be false
+
+            do
+            {
+                Console.Write("Välj ett användarnamn: ");
+                newUsername = Console.ReadLine();
+
+                controlUser = dataBase.GetUserByUsername(newUsername);
+
+                if (controlUser != null || newUsername.Length < 3)
+                {
+                    Console.WriteLine($"Användarnamn {newUsername} existerar redan eller är för kort..");
+                    Console.ReadLine();
+                    tryInput = false;
+                    controlUser = null;
+                }
+                else
+                {
+                    tryInput = true;
+                }
+
+            } while (!tryInput);
+
+            do
+            {
+                Console.Write("Välj ett lösenord: ");
+                newPassword = Console.ReadLine();
+                Console.Write("Upprepa lösenord: ");
+                string controlPassword = Console.ReadLine();
+                if (newPassword != controlPassword || newPassword.Length < 4)
+                {
+                    Console.WriteLine("Lösenordet matchar inte eller är för kort..");
+                    Console.ReadLine();
+                    tryInput = false;
+                }
+                else
+                {
+                    tryInput = true;
+                }
+
+            } while (!tryInput);
+
+            User user = CreateUser(newUsername, newPassword, rolename);
+            return user;
+        }
+
+
+        static public User CreateUser(string username, string password, string rolename)
         {
             User newUser = new User();
 
             newUser.UserName = username;
             newUser.Password = password;
-            newUser.Role = "User";
+            newUser.Role = rolename;
 
 
             DataBase db = new DataBase();
@@ -35,7 +93,7 @@ namespace GreenEvent
 
             //Hämta tillbaka det nyassignade id:t från databasen och lägg till på newUser.Id
             newUser = db.GetUserByUsername(username);
-            
+
 
             return newUser;
         }

@@ -9,8 +9,8 @@ namespace GreenEvent
 
         private User loggedInUser = null;
         private DataBase database = new DataBase();
-        private User controlUser = null; //user object to check new registration
         public int eventId; //id for getting event
+        User User = new User();
 
         public void Start()
         {
@@ -21,6 +21,8 @@ namespace GreenEvent
 
             while (running)
             {
+                string rolename = "User";
+
                 Console.WriteLine("Gör ett val:");
                 Console.WriteLine("1) Logga in");
                 Console.WriteLine("2) Registrera en ny användare");
@@ -36,7 +38,7 @@ namespace GreenEvent
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
-                        RegisterNewUser();
+                        loggedInUser = User.RegisterNewUser(rolename);
                         ShowMenu();
                         break;
                     case ConsoleKey.Escape:
@@ -48,60 +50,8 @@ namespace GreenEvent
         }// end Start
 
        
-        /// <summary>
-        /// method to send data for register new User
-        /// </summary>
-        private void RegisterNewUser()
-        {
-            string newUsername; //var for new users name
-            string newPassword; //var for new users password
-           
+       
 
-            bool tryInput; //if new input is incorrect bool will be false
-
-            do
-            {
-                Console.Write("Välj ett användarnamn: ");
-                newUsername = Console.ReadLine();
-
-                controlUser = database.GetUserByUsername(newUsername);
-
-                if (controlUser != null || newUsername.Length < 3)
-                {
-                    Console.WriteLine($"Användarnamn {newUsername} existerar redan eller är för kort..");
-                    Console.ReadLine();
-                    tryInput = false;
-                    controlUser = null;
-                }
-                else
-                {
-                    tryInput = true;
-                }
-
-            } while (!tryInput);
-
-            do
-            {
-                Console.Write("Välj ett lösenord: ");
-                newPassword = Console.ReadLine();
-                Console.Write("Upprepa lösenord: ");
-                string controlPassword = Console.ReadLine();
-                if (newPassword != controlPassword || newPassword.Length < 4)
-                {
-                    Console.WriteLine("Lösenordet matchar inte eller är för kort..");
-                    Console.ReadLine();
-                    tryInput = false;
-                }
-                else
-                {
-                    tryInput = true;
-                }
-
-            } while (!tryInput);
-
-            loggedInUser = User.CreateUser(newUsername, newPassword);
-            
-        }
         /// <summary>
         /// Method to log in
         /// </summary>
@@ -141,9 +91,6 @@ namespace GreenEvent
             Console.WriteLine($"{loggedInUser.Role} är inloggad.");
 
             ShowMenu();
-
-
-
         }
 
         //This function is not completed
@@ -155,6 +102,7 @@ namespace GreenEvent
         {
             bool running = true;
             Location location = new Location();
+            string rolename = "Admin";
 
             while (running)
             {
@@ -225,7 +173,7 @@ namespace GreenEvent
                         break;
                     case ConsoleKey.D6:
                         Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        loggedInUser.RegisterNewUser(rolename);
                         break;
                     case ConsoleKey.Escape:
                         Console.WriteLine("Loggar ut...");
