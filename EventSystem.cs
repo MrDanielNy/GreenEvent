@@ -10,7 +10,7 @@ namespace GreenEvent
         private User loggedInUser = null;
         private DataBase database = new DataBase();
         public int eventId; //id for getting event
-        User User = new User();
+        //User User = new User();
 
         public void Start()
         {
@@ -21,7 +21,7 @@ namespace GreenEvent
 
             while (running)
             {
-                string rolename = "User";
+                //string rolename = "User";
 
                 Console.WriteLine("Gör ett val:");
                 Console.WriteLine("1) Logga in");
@@ -38,7 +38,7 @@ namespace GreenEvent
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
-                        loggedInUser = User.RegisterNewUser(rolename);
+                        loggedInUser = User.RegisterNewUser("User");
                         ShowMenu();
                         break;
                     case ConsoleKey.Escape:
@@ -102,7 +102,7 @@ namespace GreenEvent
         {
             bool running = true;
             Location location = new Location();
-            string rolename = "Admin";
+            //string rolename = "Admin";
 
             while (running)
             {
@@ -113,7 +113,7 @@ namespace GreenEvent
                     Console.WriteLine($"Välkommen {loggedInUser.UserName}, gör ditt val");
                     Console.WriteLine("1) Skapa event.");
                     Console.WriteLine("2) Redigera event.");
-                    Console.WriteLine("3) Visa tillgängliga event.");
+                    Console.WriteLine("3) Visa event.");
                     Console.WriteLine("4) Skapa plats.");
                     Console.WriteLine("5) Redigera plats.");
                     Console.WriteLine("6) Skapa admin.");
@@ -142,7 +142,7 @@ namespace GreenEvent
                         }
                         else
                         {
-                            User.GetJoinedEvent(loggedInUser.Id);
+                            //User.GetJoinedEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D2:
@@ -158,7 +158,7 @@ namespace GreenEvent
                         }
                         else
                         {
-                            User.GetAvailableEvent(loggedInUser.Id);
+                            //User.GetAvailableEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D3:
@@ -178,7 +178,7 @@ namespace GreenEvent
                         break;
                     case ConsoleKey.D6:
                         Console.Clear();
-                        loggedInUser.RegisterNewUser(rolename);
+                        User.RegisterNewUser("Admin");
                         break;
                     case ConsoleKey.Escape:
                         Console.WriteLine("Loggar ut...");

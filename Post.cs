@@ -59,6 +59,7 @@ namespace GreenEvent
                         break;
 
                     case ConsoleKey.Escape:
+                        Console.Clear();
                         isRunning = false;
                         break;
 

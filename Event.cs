@@ -49,7 +49,7 @@ namespace GreenEvent
         public string Location { get; set; } = "plats där eventet ska hållas"; //Location change nr 3
         public int LocationId { get; set; }
 
-        public DataBase database = new DataBase();
+        private static DataBase database = new DataBase();
 
         private static int userId;
 
@@ -143,7 +143,7 @@ namespace GreenEvent
                         isRunning = false;
                         break;
                     case ConsoleKey.T:
-                        isRunning = DeleteEvent(this.Id);
+                        isRunning = DeleteEvent(Id);
                         break;
                     case ConsoleKey.Escape:
                         Console.Clear();
@@ -567,7 +567,7 @@ namespace GreenEvent
         public static int ShowAllEvents()
         {
             int eventId; //return if event is selected,  -1 if not
-            DataBase database = new DataBase();
+            //DataBase database = new DataBase();
             var allEvents = database.GetAllEvents(); //create list of events..
 
             //check if there is any events to list
