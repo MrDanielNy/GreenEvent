@@ -128,23 +128,7 @@ namespace GreenEvent
                     Console.WriteLine("Esc för att logga ut.");
                 }
                 //Events user is assigned to
-<<<<<<< HEAD
                 List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
-=======
-                List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
-
-                foreach (string s in userEvents)
-                {
-                    Console.WriteLine(s);
-                }
-                //Events user is not assigned to
-                List<string> userAvailableEvents = database.GetAvailableEvents(loggedInUser.Id);
-
-                foreach (string s in userAvailableEvents)
-                {
-                    Console.WriteLine(s);
-                }
->>>>>>> parent of 0189f39... Funktioner fungerar
 
                 foreach (string s in userEvents)
                 {
@@ -164,7 +148,6 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-<<<<<<< HEAD
 <<<<<<< HEAD
                         Event newEvent = new Event();
                         newEvent.ModifyEvent(0);
@@ -187,16 +170,6 @@ namespace GreenEvent
                             Console.WriteLine("Inte implementerad usermenyu");
                         }
                         break;
-=======
-                        //ShowEventsByUser();
-                        //Console.WriteLine("Inte implementerad");
-                        break;
-                    case ConsoleKey.D2:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
-                        break;
-                        /*
->>>>>>> parent of 0189f39... Funktioner fungerar
 =======
                         //ShowEventsByUser();
                         //Console.WriteLine("Inte implementerad");

@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 <<<<<<< HEAD
-<<<<<<< HEAD
 using System.Linq;
-=======
->>>>>>> parent of 0189f39... Funktioner fungerar
 =======
 >>>>>>> parent of 0189f39... Funktioner fungerar
 
@@ -719,9 +716,6 @@ namespace GreenEvent
         public DateTime Date;
         public DateTime Time;
         public int LocationId;
-<<<<<<< HEAD
->>>>>>> parent of 0189f39... Funktioner fungerar
-=======
 >>>>>>> parent of 0189f39... Funktioner fungerar
     }
 }
