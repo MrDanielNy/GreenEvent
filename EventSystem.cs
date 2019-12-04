@@ -15,16 +15,16 @@ namespace GreenEvent
         public void Start()
         {
 
-            Console.WriteLine("Welcome to GreenEvent");
+            Console.WriteLine("Välkommen till GreenEvent");
 
             bool running = true;
 
             while (running)
             {
-                Console.WriteLine("select an option:");
-                Console.WriteLine("1) LogIn");
-                Console.WriteLine("2) Register new user");
-                Console.WriteLine("0) Exit");
+                Console.WriteLine("Gör ett val:");
+                Console.WriteLine("1) Logga in");
+                Console.WriteLine("2) Registrera en ny användare");
+                Console.WriteLine("Esc) Avsluta");
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
 
@@ -61,14 +61,14 @@ namespace GreenEvent
 
             do
             {
-                Console.Write("Enter your username: ");
+                Console.Write("Välj ett användarnamn: ");
                 newUsername = Console.ReadLine();
 
                 controlUser = database.GetUserByUsername(newUsername);
 
                 if (controlUser != null || newUsername.Length < 3)
                 {
-                    Console.WriteLine($"Username {newUsername} already exits or is to short..");
+                    Console.WriteLine($"Användarnamn {newUsername} existerar redan eller är för kort..");
                     Console.ReadLine();
                     tryInput = false;
                     controlUser = null;
@@ -82,13 +82,13 @@ namespace GreenEvent
 
             do
             {
-                Console.Write("Enter your password: ");
+                Console.Write("Välj ett lösenord: ");
                 newPassword = Console.ReadLine();
-                Console.Write("Repeat password: ");
+                Console.Write("Upprepa lösenord: ");
                 string controlPassword = Console.ReadLine();
                 if (newPassword != controlPassword || newPassword.Length < 4)
                 {
-                    Console.WriteLine("Password doesn't match or is to short..");
+                    Console.WriteLine("Lösenordet matchar inte eller är för kort..");
                     Console.ReadLine();
                     tryInput = false;
                 }
@@ -110,10 +110,10 @@ namespace GreenEvent
             Console.Clear();
             while (loggedInUser == null)
             {
-                Console.Write("Write your username: ");
+                Console.Write("Ange användarnamn: ");
                 string username = Console.ReadLine();
 
-                Console.Write("Write your password: ");
+                Console.Write("Ange lösenord: ");
                 string password = Console.ReadLine();
 
                 User user = database.GetUserByUsername(username);
@@ -128,12 +128,12 @@ namespace GreenEvent
                     }
                     else
                     {
-                        Console.WriteLine("Incorrect username or password");
+                        Console.WriteLine("Fel användarnamn eller lösenord");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Incorrect username or password");
+                    Console.WriteLine("Fel användarnamn eller lösenord");
                 }
 
             }
@@ -252,14 +252,14 @@ namespace GreenEvent
 
             do
             {
-                Console.Write("Enter post: ");
+                Console.Write("Skriv inlägg: ");
                 newPostBody = Console.ReadLine();
                 newPostUserId = loggedInUser.Id;
 
 
                 if (newPostBody == null)
                 {
-                    Console.WriteLine($"Post cant be blank");
+                    Console.WriteLine($"Inlägg kan inte vara tomt");
                     Console.ReadLine();
                     tryInput = false;
                 }
