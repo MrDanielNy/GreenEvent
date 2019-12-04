@@ -98,7 +98,18 @@ namespace GreenEvent
         /// ShowMenu
         /// </summary>
         /// <returns></returns>
-        private void ShowMenu()
+        /// 
+        /*
+        private void ShowEventsByUser()
+        {
+            
+                Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
+            
+             
+           
+            // ShowMenu();
+        }*/
+    private void ShowMenu()
         {
             bool running = true;
             Location location = new Location();
@@ -129,6 +140,9 @@ namespace GreenEvent
                 }
                 
 
+
+                //Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
+
                 ConsoleKey userChoice = Console.ReadKey().Key;
 
                 switch (userChoice)
@@ -156,6 +170,15 @@ namespace GreenEvent
                             Console.WriteLine("Inte implementerad usermenyu");
                         }
                         break;
+                        loggedInUser.GetJoinedEvent(loggedInUser.Id);
+                        Console.ReadLine();
+                        break;
+                    case ConsoleKey.D2:
+                        Console.Clear();
+                        loggedInUser.GetAvailableEvent(loggedInUser.Id);
+                        Console.ReadLine();
+                        break;
+                        
                     case ConsoleKey.D3:
                         Console.Clear();
                         eventId = Event.ShowAllEvents();

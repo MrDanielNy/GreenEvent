@@ -7,7 +7,7 @@ namespace GreenEvent
 {
     class DataBase
     {
-        private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
+        private readonly string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=GreenEvent;Integrated Security=True";
 
 
 /*
@@ -433,6 +433,52 @@ namespace GreenEvent
                 sqlCommand.Parameters.AddWithValue("@UserId", userId);
                 sqlCommand.Parameters.AddWithValue("@EventId", eventId);
                 sqlCommand.Parameters.AddWithValue("@Body", body);
+            }
+
+            myConnection.Close();
+        }
+    
+
+        //Jonas
+        public List<string> GetEventNameByUser(int userId)
+        {
+            string sqlQuery = "SELECT [Event].[Name] FROM [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId";
+     
+            List<string> eventName = new List<String>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        eventName.Add(dataReader["Name"].ToString());
+                    }
+
+                    myConnection.Close();
+                }
+            }
+           
+            return eventName;
+
+        }
+        //
+        public List<string> GetAvailableEvents(int userId)
+        {
+            string sqlQuery = "select [Name] from [Event] where [Event].Id not in (select [Event].Id from [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId)";
+
+            List<string> eventName = new List<String>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
                 myConnection.Open();
 
                 using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
@@ -509,6 +555,27 @@ namespace GreenEvent
                 sqlCommand.Parameters.AddWithValue("@body", adminPost.Body);
                 sqlCommand.Parameters.AddWithValue("@userid", adminPost.UserId);
                 sqlCommand.Parameters.AddWithValue("@eventid", adminPost.EventId);
+                
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+            return eventName;
+
+        }
+        //
+
+        public void JoinEvent(int userId, int userChoice)
+        {
+            string sqlQuery = "INSERT INTO[Join](Accepted, EventID, UserId) VALUES (1, @eventid, @userId)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@eventid", userChoice);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
 
                 myConnection.Open();
 
@@ -539,11 +606,36 @@ namespace GreenEvent
                         location.Name = dataReader["Name"].ToString();
                         location.MapLink = dataReader["MapLink"].ToString();
                         locations.Add(location);
+
+                    }
+                myConnection.Close();
+            }
+             return locations;
+        }
+        
+        
+        
+        public List<Event> GetAllEvents()
+        {
+            List<Event> events = new List<Event>();
+            string sqlQuery = "SELECT * FROM [Event]";
+
+            using(SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                myConnection.Open();
+                using(SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event currentEvents = new Event();
+                        currentEvents.Id = int.Parse(dataReader["Id"].ToString());
+                        currentEvents.Name = dataReader["Name"].ToString();
+                        events.Add(currentEvents);
                     }
                     myConnection.Close();
                 }
             }
-            return locations;
-        }
+        }   
     }
 }
