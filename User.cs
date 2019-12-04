@@ -94,7 +94,6 @@ namespace GreenEvent
             //Hämta tillbaka det nyassignade id:t från databasen och lägg till på newUser.Id
             newUser = db.GetUserByUsername(username);
 
-
             return newUser;
         }
 
