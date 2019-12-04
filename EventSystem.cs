@@ -63,7 +63,7 @@ namespace GreenEvent
             }
             else
             {
-                Console.WriteLine("Travelmenu not yet implemented");
+                ShowMenu();
             }
 
 
@@ -89,8 +89,8 @@ namespace GreenEvent
                 } else
                 {
                     Console.WriteLine($"Welcome {loggedInUser.UserName}, showing User-menu");
-                    Console.WriteLine("1) Hello");
-                    Console.WriteLine("2) Exit");
+                    Console.WriteLine("1) Skapa inlägg");
+                    Console.WriteLine("2) Redigera inlägg");
                 }
                 
 
