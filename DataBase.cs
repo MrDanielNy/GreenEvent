@@ -425,10 +425,84 @@ namespace GreenEvent
         }
 
         public void AddAdminPost(AdminPost adminPost)
+        public void CreatePost(int userId, int eventId, string body)
         {
+            string sqlQuery = "INSERT INTO [Post] (UserId, EventId, Body) VALUES (@UserId, @EventId, @Body)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@UserId", userId);
+                sqlCommand.Parameters.AddWithValue("@EventId", eventId);
+                sqlCommand.Parameters.AddWithValue("@Body", body);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Post post = new Post();
+                        post.Id = int.Parse(dataReader["Id"].ToString());
+                        post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        post.EventId = int.Parse(dataReader["EventId"].ToString()); 
+                        post.Text = dataReader["Body"].ToString();
+                    }
+
+                    myConnection.Close();
+                }
+            }
+        }
+
+        public void EditPosts(int id, string text)
+        {
+            string sqlQuery = "UPDATE [Post] SET [Body] = @Text WHERE Id = @Id";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                sqlCommand.Parameters.AddWithValue("@Text", text);
+                myConnection.Open();
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Post post = new Post();
+                        post.Id = int.Parse(dataReader["Id"].ToString());
+                        post.Text = dataReader["Body"].ToString();
+                    }
+                }
+            }
+        }
+
+        public List<Post> GetPostsByEventId(int eventId)
+        {
+            string sqlQuery = "SELECT * FROM [Post] WHERE [EventId] LIKE @EventId";
+            List<Post> posts = new List<Post>();
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@EventId", eventId);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Post post = new Post();
+                        post.Id = int.Parse(dataReader["Id"].ToString());
+                        post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        post.EventId = int.Parse(dataReader["EventId"].ToString());
+                        post.Text = dataReader["Body"].ToString();
+
+                        posts.Add(post);
+                    }
+                }
+            }
+            return posts;
+        }
 
            
-
+        public void AddAdminPost(AdminPost adminPost) 
+        {
             string sqlQuery = "INSERT INTO[Post](Body, UserId, EventId) VALUES (@body, @userid, @eventid)";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
