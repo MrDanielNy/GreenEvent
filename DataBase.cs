@@ -77,7 +77,7 @@ namespace GreenEvent
 
         public void CreatePost(int userId, int eventId, string body)
         {
-            string sqlQuery = "INSERT INTO [Post] (UserID, EventID, Body) VALUES (@UserId, @EventId, @Body)";
+            string sqlQuery = "INSERT INTO [Post] (UserId, EventId, Body) VALUES (@UserId, @EventId, @Body)";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
@@ -92,8 +92,8 @@ namespace GreenEvent
                     {
                         Post post = new Post();
                         post.Id = int.Parse(dataReader["Id"].ToString());
-                        post.UserId = int.Parse(dataReader["UserID"].ToString());
-                        post.EventId = int.Parse(dataReader["EventID"].ToString());
+                        post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        post.EventId = int.Parse(dataReader["EventId"].ToString()); 
                         post.Text = dataReader["Body"].ToString();
                     }
 
