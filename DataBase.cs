@@ -122,5 +122,32 @@ namespace GreenEvent
                 }
             }
         }
+
+        public List<Post> GetPostsByEventId(int eventId)
+        {
+            string sqlQuery = "SELECT * FROM [Post] WHERE [EventId] LIKE @EventId";
+            List<Post> posts = new List<Post>();
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@EventId", eventId);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Post post = new Post();
+                        post.Id = int.Parse(dataReader["Id"].ToString());
+                        post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        post.EventId = int.Parse(dataReader["EventId"].ToString());
+                        post.Text = dataReader["Body"].ToString();
+
+                        posts.Add(post);
+                    }
+                }
+            }
+            return posts;
+        }
     }
 }
