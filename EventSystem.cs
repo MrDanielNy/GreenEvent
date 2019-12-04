@@ -242,6 +242,38 @@ namespace GreenEvent
                                                      
         } //end of showMenu
 
-        
+
+        private void AddNewAdminPost()
+        {
+            string newPostBody;
+            int newPostUserId;
+            //int newPostEventId;
+            bool tryInput;
+
+            do
+            {
+                Console.Write("Enter post: ");
+                newPostBody = Console.ReadLine();
+                newPostUserId = loggedInUser.Id;
+
+
+                if (newPostBody == null)
+                {
+                    Console.WriteLine($"Post cant be blank");
+                    Console.ReadLine();
+                    tryInput = false;
+                }
+                else
+                {
+                    tryInput = true;
+                }
+
+            } while (!tryInput);
+
+
+            AdminPost.CreateAdminPost(newPostBody, newPostUserId);
+
+        }
+
     }
 }
