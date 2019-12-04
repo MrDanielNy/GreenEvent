@@ -78,6 +78,10 @@ namespace GreenEvent
 
             Console.ForegroundColor = ConsoleColor.White;
 
+            Console.SetCursorPosition(0,7);
+            Console.WriteLine("---<<<Inlägg tillhörande event>>>---");
+
+
             Console.ReadLine();
 
         }

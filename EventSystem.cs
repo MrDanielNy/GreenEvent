@@ -225,6 +225,7 @@ namespace GreenEvent
                         break;
                     case ConsoleKey.D6:
                         Console.Clear();
+                        
                         Console.WriteLine("Inte implementerad");
                         break;
                     case ConsoleKey.Escape:
