@@ -188,20 +188,7 @@ namespace GreenEvent
                     //Jonas
 
                 }
-                //Events user is assigned to
-                List<string> userEvents = database.GetEventNameByUser(loggedInUser.Id);
-
-                foreach (string s in userEvents)
-                {
-                    Console.WriteLine(s);
-                }
-                //Events user is not assigned to
-                List<string> userAvailableEvents = database.GetAvailableEvents(loggedInUser.Id);
-
-                foreach (string s in userAvailableEvents)
-                {
-                    Console.WriteLine(s);
-                }
+                
 
 
                 //Console.WriteLine(database.GetEventNameByUser(loggedInUser.Id));
@@ -212,12 +199,13 @@ namespace GreenEvent
                 {
                     case ConsoleKey.D1:
                         Console.Clear();
-                        //ShowEventsByUser();
-                        //Console.WriteLine("Inte implementerad");
+                        loggedInUser.GetJoinedEvent(loggedInUser.Id);
+                        Console.ReadLine();
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        loggedInUser.GetAvailableEvent(loggedInUser.Id);
+                        Console.ReadLine();
                         break;
                         /*
                     case ConsoleKey.D3:

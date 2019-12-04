@@ -165,14 +165,14 @@ namespace GreenEvent
         }
         //
 
-        private void JoinEvent(int userId, Join join)
+        public void JoinEvent(int userId, int userChoice)
         {
             string sqlQuery = "INSERT INTO[Join](Accepted, EventID, UserId) VALUES (1, @eventid, @userId)";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-                sqlCommand.Parameters.AddWithValue("@eventid", join.EventId);
-                sqlCommand.Parameters.AddWithValue("@userId", join.UserId);
+                sqlCommand.Parameters.AddWithValue("@eventid", userChoice);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
 
                 myConnection.Open();
 
@@ -180,8 +180,30 @@ namespace GreenEvent
 
                 myConnection.Close();
             }
-        }
+        } 
+        
+        public List<Event> GetAllEvents()
+        {
+            List<Event> events = new List<Event>();
+            string sqlQuery = "SELECT * FROM [Event]";
 
-        //Jonas
+            using(SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                myConnection.Open();
+                using(SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event currentEvents = new Event();
+                        currentEvents.Id = int.Parse(dataReader["Id"].ToString());
+                        currentEvents.Name = dataReader["Name"].ToString();
+                        events.Add(currentEvents);
+                    }
+                    myConnection.Close();
+                }
+            }
+            return events;
+        }
     }
 }
