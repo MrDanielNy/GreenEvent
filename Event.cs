@@ -51,8 +51,12 @@ namespace GreenEvent
 
         public DataBase database = new DataBase();
 
-        public void ShowEvent()
+        private static int userId;
+
+        public void ShowEvent(int userid)
         {
+            userId = userid;
+
             List<User> users = database.GetUsersByEventId(this.Id);
 
             ModifyEvent(7);
@@ -76,13 +80,8 @@ namespace GreenEvent
                 }
             }
 
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.SetCursorPosition(0,7);
-            Console.WriteLine("---<<<Inlägg tillhörande event>>>---");
-
-
-            Console.ReadLine();
+            
+            Post.ShowPosts(this, userId);
 
         }
 
