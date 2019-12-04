@@ -76,8 +76,6 @@ namespace GreenEvent
 
         }
 
-
-
         public void DeleteEvent(int eventId)
         {
 
@@ -94,7 +92,6 @@ namespace GreenEvent
 
                 myConnection.Close();
             }
-
 
         }
 
@@ -263,7 +260,6 @@ namespace GreenEvent
                 user.Role = GetRoleNameById(userRoleId); //set user role from database
             }
 
-
             return user; // Return the user
         }
 
@@ -392,10 +388,10 @@ namespace GreenEvent
             }
         }
 
-        public AdminPost GetAdmininPostByAdminPostId(int id)
+        public Post GetAdmininPostByAdminPostId(int id)
         {
 
-            AdminPost myAdminPost = null;
+            Post myAdminPost = null;
             string sqlQuery = "SELECT * FROM [Post] WHERE [Id] = @id";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
@@ -407,7 +403,7 @@ namespace GreenEvent
                 {
                     if (dataReader.Read())
                     {
-                        myAdminPost = new AdminPost();
+                        myAdminPost = new Post();
 
 
                         myAdminPost.Id = int.Parse(dataReader["Id"].ToString());
@@ -424,32 +420,32 @@ namespace GreenEvent
 
         }
 
-        public void CreatePost(int userId, int eventId, string body)
-        {
-            string sqlQuery = "INSERT INTO [Post] (UserId, EventId, Body) VALUES (@UserId, @EventId, @Body)";
-            using (SqlConnection myConnection = new SqlConnection(connectionString))
-            {
-                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-                sqlCommand.Parameters.AddWithValue("@UserId", userId);
-                sqlCommand.Parameters.AddWithValue("@EventId", eventId);
-                sqlCommand.Parameters.AddWithValue("@Body", body);
-                myConnection.Open();
+        //public void CreatePost(Post post)
+        //{
+        //    string sqlQuery = "INSERT INTO [Post] (UserId, EventId, Body) VALUES (@UserId, @EventId, @Body)";
+        //    using (SqlConnection myConnection = new SqlConnection(connectionString))
+        //    {
+        //        SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+        //        sqlCommand.Parameters.AddWithValue("@UserId", post.UserId);
+        //        sqlCommand.Parameters.AddWithValue("@EventId", post.EventId);
+        //        sqlCommand.Parameters.AddWithValue("@Body", post.Body);
+        //        myConnection.Open();
 
-                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        Post post = new Post();
-                        post.Id = int.Parse(dataReader["Id"].ToString());
-                        post.UserId = int.Parse(dataReader["UserId"].ToString());
-                        post.EventId = int.Parse(dataReader["EventId"].ToString()); 
-                        post.Text = dataReader["Body"].ToString();
-                    }
+        //        using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+        //        {
+        //            while (dataReader.Read())
+        //            {
+        //                //Post post = new Post();
+        //                post.Id = int.Parse(dataReader["Id"].ToString());
+        //                post.UserId = int.Parse(dataReader["UserId"].ToString());
+        //                post.EventId = int.Parse(dataReader["EventId"].ToString()); 
+        //                post.Body = dataReader["Body"].ToString();
+        //            }
 
-                    myConnection.Close();
-                }
-            }
-        }
+        //            myConnection.Close();
+        //        }
+        //    }
+        //}
 
         public void EditPosts(int id, string text)
         {
@@ -466,7 +462,7 @@ namespace GreenEvent
                     {
                         Post post = new Post();
                         post.Id = int.Parse(dataReader["Id"].ToString());
-                        post.Text = dataReader["Body"].ToString();
+                        post.Body = dataReader["Body"].ToString();
                     }
                 }
             }
@@ -474,12 +470,17 @@ namespace GreenEvent
 
         public List<Post> GetPostsByEventId(int eventId)
         {
-            string sqlQuery = "SELECT * FROM [Post] WHERE [EventId] LIKE @EventId";
-            List<Post> posts = new List<Post>();
+            string sqlQuery = "SELECT p.[Id], p.[Body], u.Username, u.RoleId FROM[POST] AS p " +
+                "LEFT JOIN[User] AS u ON p.[UserId] = u.[Id] " +
+                "WHERE p.[EventId] = @eventId";
+
+            int RoleId;
+
+           List<Post> posts = new List<Post>();
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-                sqlCommand.Parameters.AddWithValue("@EventId", eventId);
+                sqlCommand.Parameters.AddWithValue("@eventId", eventId);
                 myConnection.Open();
 
                 using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
@@ -487,28 +488,40 @@ namespace GreenEvent
                     while (dataReader.Read())
                     {
                         Post post = new Post();
+
                         post.Id = int.Parse(dataReader["Id"].ToString());
-                        post.UserId = int.Parse(dataReader["UserId"].ToString());
-                        post.EventId = int.Parse(dataReader["EventId"].ToString());
-                        post.Text = dataReader["Body"].ToString();
+                        //post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        //post.EventId = int.Parse(dataReader["EventId"].ToString());
+                        post.Body = dataReader["Body"].ToString();
+                        post.UserName = dataReader["Username"].ToString();
+                        RoleId = int.Parse(dataReader["RoleId"].ToString());
+
+                        if (RoleId == 1)
+                        {
+                            post.isAdmin = true; //if post created by admin
+                            post.UserName = "Admin";
+                        }
 
                         posts.Add(post);
                     }
                 }
             }
+
+            posts.Reverse();
+
             return posts;
         }
 
            
-        public void AddAdminPost(AdminPost adminPost) 
+        public void AddPost(Post post) 
         {
             string sqlQuery = "INSERT INTO[Post](Body, UserId, EventId) VALUES (@body, @userid, @eventid)";
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-                sqlCommand.Parameters.AddWithValue("@body", adminPost.Body);
-                sqlCommand.Parameters.AddWithValue("@userid", adminPost.UserId);
-                sqlCommand.Parameters.AddWithValue("@eventid", adminPost.EventId);
+                sqlCommand.Parameters.AddWithValue("@body", post.Body);
+                sqlCommand.Parameters.AddWithValue("@userid", post.UserId);
+                sqlCommand.Parameters.AddWithValue("@eventid", post.EventId);
 
                 myConnection.Open();
 
@@ -545,5 +558,88 @@ namespace GreenEvent
             }
             return locations;
         }
+
+        //Jonas
+        //Get all events user has decided to join
+        public List<string> GetEventNameByUser(int userId)
+        {
+            string sqlQuery = "SELECT [Event].[Name] FROM [User] join [Join] on [User].[Id] " +
+                "= [Join].UserId join [Event] on [Join].EventId = [Event].[Id] WHERE [User].[Id] = @userId";
+
+            List<string> eventName = new List<String>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        eventName.Add(dataReader["Name"].ToString());
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return eventName;
+
+        }
+        //
+        //Get all events the user has not joined
+        public List<Event> GetAvailableEvents(int userId)
+        {
+            string sqlQuery = "select [Name], Id from [Event] where [Event].Id not in (select [Event].Id from [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId)";
+
+            List<Event> eventName = new List<Event>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event currentEvents = new Event();
+                        currentEvents.Id = int.Parse(dataReader["Id"].ToString());
+                        currentEvents.Name = dataReader["Name"].ToString();
+                        eventName.Add(currentEvents);
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return eventName;
+
+        }
+        //
+        //Join an event
+        public void JoinEvent(int userId, int userChoice)
+        {
+            string sqlQuery = "INSERT INTO [Join] (EventId, UserId) VALUES (@eventid, @userId)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@eventid", userChoice);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+        }
+        
+       
     }
 }
