@@ -21,6 +21,8 @@ namespace GreenEvent
             List<Location> currectLocations = new List<Location>();
             currectLocations = GetAllLocations();
 
+            DataBase dataBase = new DataBase();
+
             //Handle menu
             while(hasNotMadeSelection)
             {
@@ -35,18 +37,32 @@ namespace GreenEvent
                 Console.Write("Ange länk till plats på karta: ");
                 linkToLocation = Console.ReadLine();
 
+                //Check if this location doesn't excist.
+                bool doesItExist = false;
+                foreach (Location location in currectLocations)
+                {
+                    Console.WriteLine($"Comparing {location.Name.ToLower()} with {nameOfLocation.ToLower()}");
+                    if(location.Name.ToLower() == nameOfLocation.ToLower())
+                    {
+                        doesItExist = true;
+                        Console.WriteLine(doesItExist);
+                        break;
+                    }
+                }
+
                 //Check to see we have at least two chars in the name field, otherwise we prompt the user to either go back or try again.
-                if(nameOfLocation.Length >=2)
+                if (nameOfLocation.Length >=2 && doesItExist==false)
                 {
                     hasNotMadeSelection = false;
                     userInputCorrect = true;
-                } else
+                } 
+                else
                 {
                     bool willTheUserTryAgainMenu = true;
                     while (willTheUserTryAgainMenu)
                     {
                         Console.Clear();
-                        Console.WriteLine("Namnet måste vara längre än 2 tecken. Tryck ett (1) för att försöka igen eller Escape för att backa");
+                        Console.WriteLine("Namnet måste vara längre än 2 tecken eller så fanns redan platsen. Tryck ett (1) för att försöka igen eller Escape för att backa");
                         ConsoleKey userChoice = Console.ReadKey().Key;
                         switch(userChoice)
                         {
@@ -111,7 +127,6 @@ namespace GreenEvent
                 Console.WriteLine("Välj vilken plats du vill redigera, backa med Escape-knappen");
                 ConsoleKey userChoice = Console.ReadKey().Key;
                 int userChoiceAsNumber = 0;
-                Console.ReadLine();
                 //Did the user choose a valid number or escape?
                 if(int.TryParse(userChoice.ToString().Substring(1, 1), out userChoiceAsNumber)) //Check if second char is a number
                 {
