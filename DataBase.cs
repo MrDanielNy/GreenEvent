@@ -106,5 +106,59 @@ namespace GreenEvent
             }
 
         }
+
+        public AdminPost GetAdmininPostByAdminPostId(int id)
+        {
+
+            AdminPost myAdminPost = null;
+            string sqlQuery = "SELECT * FROM [Post] WHERE [Id] = @id";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    if (dataReader.Read())
+                    {
+                        myAdminPost = new AdminPost();
+
+
+                        myAdminPost.Id = int.Parse(dataReader["Id"].ToString());
+                        myAdminPost.Body = dataReader["Body"].ToString();
+                        myAdminPost.UserId = int.Parse(dataReader["UserId"].ToString());
+                        myAdminPost.EventId = int.Parse(dataReader["EventId"].ToString());
+                    }
+                    myConnection.Close();
+                }
+            }
+            
+
+            return myAdminPost;
+
+        }
+
+        public void AddAdminPost(AdminPost adminPost)
+        {
+
+           
+
+            string sqlQuery = "INSERT INTO[Post](Body, UserId, EventId) VALUES (@body, @userid, @eventid)";
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@body", adminPost.Body);
+                sqlCommand.Parameters.AddWithValue("@userid", adminPost.UserId);
+                sqlCommand.Parameters.AddWithValue("@eventid", adminPost.EventId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                myConnection.Close();
+            }
+
+        }
     }
 }
