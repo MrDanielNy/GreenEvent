@@ -191,37 +191,37 @@ namespace GreenEvent
         } //end of showMenu
 
 
-        private void AddNewAdminPost()
-        {
-            string newPostBody;
-            int newPostUserId;
-            //int newPostEventId;
-            bool tryInput;
+        //private void AddNewAdminPost()
+        //{
+        //    string newPostBody;
+        //    int newPostUserId;
+        //    //int newPostEventId;
+        //    bool tryInput;
 
-            do
-            {
-                Console.Write("Skriv inlägg: ");
-                newPostBody = Console.ReadLine();
-                newPostUserId = loggedInUser.Id;
-
-
-                if (newPostBody == null)
-                {
-                    Console.WriteLine($"Inlägg kan inte vara tomt");
-                    Console.ReadLine();
-                    tryInput = false;
-                }
-                else
-                {
-                    tryInput = true;
-                }
-
-            } while (!tryInput);
+        //    do
+        //    {
+        //        Console.Write("Skriv inlägg: ");
+        //        newPostBody = Console.ReadLine();
+        //        newPostUserId = loggedInUser.Id;
 
 
-            AdminPost.CreateAdminPost(newPostBody, newPostUserId);
+        //        if (newPostBody == null)
+        //        {
+        //            Console.WriteLine($"Inlägg kan inte vara tomt");
+        //            Console.ReadLine();
+        //            tryInput = false;
+        //        }
+        //        else
+        //        {
+        //            tryInput = true;
+        //        }
 
-        }
+        //    } while (!tryInput);
+
+
+        //    AdminPost.CreateAdminPost(newPostBody, newPostUserId);
+
+        //}
 
     }
 }
