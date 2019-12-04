@@ -424,7 +424,6 @@ namespace GreenEvent
 
         }
 
-        public void AddAdminPost(AdminPost adminPost)
         public void CreatePost(int userId, int eventId, string body)
         {
             string sqlQuery = "INSERT INTO [Post] (UserId, EventId, Body) VALUES (@UserId, @EventId, @Body)";
