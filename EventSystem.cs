@@ -154,6 +154,7 @@ namespace GreenEvent
         private void ShowMenu()
         {
             bool running = true;
+            Location location = new Location();
 
             while (running)
             {
@@ -195,6 +196,27 @@ namespace GreenEvent
                         {
                             var myEvent = database.GetEventByEventId(eventId);
                             myEvent.EditEvent();
+                        if(loggedInUser.Role == "Admin")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad adminmeny");
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad usermenyu");
+                        }
+                        break;
+                    case ConsoleKey.D2:
+                        if (loggedInUser.Role == "Admin")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad adminmeny");
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inte implementerad usermenyu");
                         }
                         break;
                     case ConsoleKey.D3:
@@ -207,12 +229,10 @@ namespace GreenEvent
                         }
                         break;
                     case ConsoleKey.D4:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        location.CreateNewLocation();
                         break;
                     case ConsoleKey.D5:
-                        Console.Clear();
-                        Console.WriteLine("Inte implementerad");
+                        location.EditLocation();
                         break;
                     case ConsoleKey.D6:
                         Console.Clear();
