@@ -75,6 +75,67 @@ namespace GreenEvent
             return users;
 
         }
+        public bool IsUserJoined(int eventId, int userId)
+        {
+            int userIs = 0;
+            int roleId = GetRoleIdByUserId(userId);
+
+
+            string sqlQuery = "SELECT u.Username, u.[Id] FROM[Join] AS j " +
+                "LEFT JOIN[User] AS u ON j.[UserId] = u.[Id] " +
+                "WHERE j.[EventId] = @eventId AND u.Id = @userId";
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@eventId", eventId);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+
+                myConnection.Open();
+
+                using SqlDataReader dataReader = sqlCommand.ExecuteReader();
+
+                if (dataReader.Read())
+                {
+                    userIs = 1;
+                }
+
+                myConnection.Close();
+            }
+            if (userIs == 1 || roleId == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        private int GetRoleIdByUserId(int userId)
+        {
+            string sqlQuery = "SELECT [RoleId] FROM [User] WHERE [Id] = @userId"; // Query to run against the DB
+
+            int id;            
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString)) // Prepare connection to the db
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection); // Prepare the query for the db
+
+                sqlCommand.Parameters.AddWithValue("@userId", userId); // Add username to the query 
+
+                myConnection.Open(); // Open connection to the db
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader()) // Run query on db
+                {
+                    dataReader.Read();
+                    id = int.Parse(dataReader["RoleId"].ToString());
+                    myConnection.Close(); // Close connection to the db
+                }
+            }
+
+            return id;
+        }
 
         public void DeleteEvent(int eventId)
         {
@@ -154,6 +215,76 @@ namespace GreenEvent
 
             return allEvents;
         }
+        public List<Event> GetAllEventsJoined(int userId)
+        {
+            string sqlQuery = "SELECT e.Id, e.[Name], e.[Date] FROM[Join] AS j " +
+                "LEFT JOIN[Event] AS e ON e.Id = j.EventId " +
+                "WHERE j.UserId = @userId";
+
+            List<Event> allEvents = new List<Event>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event myEvent = new Event();
+
+                        myEvent.Id = int.Parse(dataReader["Id"].ToString());
+                        myEvent.Name = dataReader["Name"].ToString();
+                        myEvent.Date = dataReader["Date"].ToString();
+
+                        allEvents.Add(myEvent);
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return allEvents;
+        }
+        public List<Event> GetAllEventsToJoin(int userId)
+        {
+            string sqlQuery = "SELECT e.Id, e.[Name], e.[Date] FROM[Join] AS j " +
+                "LEFT JOIN[Event] AS e ON e.Id = j.EventId " +
+                "WHERE j.UserId = @userId";
+
+
+            List<Event> allEvents = new List<Event>();
+
+            using (SqlConnection myConnection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+                sqlCommand.Parameters.AddWithValue("@userId", userId);
+                myConnection.Open();
+
+                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        Event myEvent = new Event();
+
+                        myEvent.Id = int.Parse(dataReader["Id"].ToString());
+                        myEvent.Name = dataReader["Name"].ToString();
+                        myEvent.Date = dataReader["Date"].ToString();
+
+                        allEvents.Add(myEvent);
+                    }
+
+                    myConnection.Close();
+                }
+            }
+
+            return allEvents;
+        }
+
+
+
         public Event GetEventByEventId(int id)
         {
             Event myEvent = null;
@@ -388,37 +519,37 @@ namespace GreenEvent
             }
         }
 
-        public Post GetAdmininPostByAdminPostId(int id)
-        {
+        //public Post GetAdmininPostByAdminPostId(int id)
+        //{
 
-            Post myAdminPost = null;
-            string sqlQuery = "SELECT * FROM [Post] WHERE [Id] = @id";
-            using (SqlConnection myConnection = new SqlConnection(connectionString))
-            {
-                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-                sqlCommand.Parameters.AddWithValue("@id", id);
-                myConnection.Open();
+        //    Post myAdminPost = null;
+        //    string sqlQuery = "SELECT * FROM [Post] WHERE [Id] = @id";
+        //    using (SqlConnection myConnection = new SqlConnection(connectionString))
+        //    {
+        //        SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
+        //        sqlCommand.Parameters.AddWithValue("@id", id);
+        //        myConnection.Open();
 
-                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
-                {
-                    if (dataReader.Read())
-                    {
-                        myAdminPost = new Post();
+        //        using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+        //        {
+        //            if (dataReader.Read())
+        //            {
+        //                myAdminPost = new Post();
 
 
-                        myAdminPost.Id = int.Parse(dataReader["Id"].ToString());
-                        myAdminPost.Body = dataReader["Body"].ToString();
-                        myAdminPost.UserId = int.Parse(dataReader["UserId"].ToString());
-                        myAdminPost.EventId = int.Parse(dataReader["EventId"].ToString());
-                    }
-                    myConnection.Close();
-                }
-            }
+        //                myAdminPost.Id = int.Parse(dataReader["Id"].ToString());
+        //                myAdminPost.Body = dataReader["Body"].ToString();
+        //                myAdminPost.UserId = int.Parse(dataReader["UserId"].ToString());
+        //                myAdminPost.EventId = int.Parse(dataReader["EventId"].ToString());
+        //            }
+        //            myConnection.Close();
+        //        }
+        //    }
             
 
-            return myAdminPost;
+        //    return myAdminPost;
 
-        }
+        //}
 
         //public void CreatePost(Post post)
         //{
@@ -470,7 +601,7 @@ namespace GreenEvent
 
         public List<Post> GetPostsByEventId(int eventId)
         {
-            string sqlQuery = "SELECT p.[Id], p.[Body], u.Username, u.RoleId FROM[POST] AS p " +
+            string sqlQuery = "SELECT p.[Id], p.[Body], u.Username, u.RoleId, p.[UserId] FROM[POST] AS p " +
                 "LEFT JOIN[User] AS u ON p.[UserId] = u.[Id] " +
                 "WHERE p.[EventId] = @eventId";
 
@@ -490,7 +621,7 @@ namespace GreenEvent
                         Post post = new Post();
 
                         post.Id = int.Parse(dataReader["Id"].ToString());
-                        //post.UserId = int.Parse(dataReader["UserId"].ToString());
+                        post.UserId = int.Parse(dataReader["UserId"].ToString());
                         //post.EventId = int.Parse(dataReader["EventId"].ToString());
                         post.Body = dataReader["Body"].ToString();
                         post.UserName = dataReader["Username"].ToString();
@@ -593,7 +724,7 @@ namespace GreenEvent
         //Get all events the user has not joined
         public List<Event> GetAvailableEvents(int userId)
         {
-            string sqlQuery = "select [Name], Id from [Event] where [Event].Id not in (select [Event].Id from [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId)";
+            string sqlQuery = "select [Name], Id , [DATE] from [Event] where [Event].Id not in (select [Event].Id from [User] join [Join] on [User].Id = [Join].UserId join [Event] on [Join].EventId = [Event].Id WHERE [User].Id = @userId)";
 
             List<Event> eventName = new List<Event>();
 
@@ -611,6 +742,7 @@ namespace GreenEvent
                         Event currentEvents = new Event();
                         currentEvents.Id = int.Parse(dataReader["Id"].ToString());
                         currentEvents.Name = dataReader["Name"].ToString();
+                        currentEvents.Date = dataReader["Date"].ToString();
                         eventName.Add(currentEvents);
                     }
 

@@ -8,9 +8,16 @@ namespace GreenEvent
     {
 
         private User loggedInUser = null;
+        
+        
         private DataBase database = new DataBase();
-        public int eventId; //id for getting event
+        private int eventId; //id for getting event
+        private bool isAdmin = false; //for using menu with user and admin
+        
+        
         //User User = new User();
+
+
 
         public void Start()
         {
@@ -100,15 +107,22 @@ namespace GreenEvent
         /// <returns></returns>
         private void ShowMenu()
         {
+            if (loggedInUser.Role == "Admin")
+            {
+                isAdmin = true;
+            }
             bool running = true;
             Location location = new Location();
             //string rolename = "Admin";
+
+            
 
             while (running)
             {
                 Console.Clear();
                 //changed exit to 0
-                if(loggedInUser.Role == "Admin")
+                
+                if(isAdmin)
                 {
                     Console.WriteLine($"Välkommen {loggedInUser.UserName}, gör ditt val");
                     Console.WriteLine("1) Skapa event.");
@@ -134,22 +148,29 @@ namespace GreenEvent
                 switch (userChoice)
                 {
                     case ConsoleKey.D1:
-                        if (loggedInUser.Role == "Admin")
+                        Console.Clear();
+                        if (isAdmin)
                         {
-                            Console.Clear();
                             Event newEvent = new Event();
                             newEvent.ModifyEvent(0);
                         }
                         else
                         {
+                            eventId = Event.ShowAllEvents(loggedInUser.Id, false);
+                            if (eventId != -1)
+                            {
+                                var myEvent = database.GetEventByEventId(eventId);
+                                myEvent.ShowEvent(loggedInUser.Id);
+                            }
+
                             //User.GetJoinedEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D2:
-                        
-                        if(loggedInUser.Role == "Admin")
+                        Console.Clear();
+                        if(isAdmin)
                         {
-                            eventId = Event.ShowAllEvents();
+                            eventId = Event.ShowAllEvents(-1, true);
                             if (eventId != -1)
                             {
                                 var myEvent = database.GetEventByEventId(eventId);
@@ -158,36 +179,58 @@ namespace GreenEvent
                         }
                         else
                         {
+                            eventId = Event.ShowAllEvents(loggedInUser.Id, true);
+                            if (eventId != -1)
+                            {
+                                var myEvent = database.GetEventByEventId(eventId);
+                                myEvent.ShowEvent(loggedInUser.Id);
+                            }
+
                             //User.GetAvailableEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D3:
-                        Console.Clear();
-                        eventId = Event.ShowAllEvents();
-                        if (eventId != -1)
+                        if (isAdmin)
                         {
-                            var myEvent = database.GetEventByEventId(eventId);
-                            myEvent.ShowEvent(loggedInUser.Id);
+                            Console.Clear();
+                            eventId = Event.ShowAllEvents(-1, true);
+                            if (eventId != -1)
+                            {
+                                var myEvent = database.GetEventByEventId(eventId);
+                                myEvent.ShowEvent(loggedInUser.Id);
+                            }
                         }
                         break;
                     case ConsoleKey.D4:
-                        location.CreateNewLocation();
+                        if (isAdmin)
+                        {
+                            location.CreateNewLocation();
+                        }
                         break;
                     case ConsoleKey.D5:
-                        location.EditLocation();
+                        if (isAdmin)
+                        {
+                            location.EditLocation();
+                        }
+                        
+                        
                         break;
                     case ConsoleKey.D6:
-                        Console.Clear();
-                        User.RegisterNewUser("Admin");
+                        if (isAdmin)
+                        {
+                            Console.Clear();
+                            User.RegisterNewUser("Admin");
+                        }
                         break;
                     case ConsoleKey.Escape:
                         Console.WriteLine("Loggar ut...");
                         Console.Clear();
+                        isAdmin = false;
                         loggedInUser = null;
                         running = false;
                         break;
                     default:
-                        Console.WriteLine("Felaktigt val, försök igen.");
+                        //Console.WriteLine("Felaktigt val, försök igen.");
                         break;
                 }
 

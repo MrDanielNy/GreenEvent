@@ -44,9 +44,15 @@ namespace GreenEvent
                         Console.WriteLine($"{post.Body} /{post.UserName}");
                     }
                 }
-
+                bool userIsJoined = database.IsUserJoined(myEvent.Id, userId);
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("1) Lägg till nytt inlägg \tesc) Tillbaka");
+                Console.Write("1) Lägg till nytt inlägg \t");
+                if (!userIsJoined)
+                {
+                    Console.Write("2) Joina event \t");
+                }
+                Console.Write("esc) Tillbaka");
+
 
                 ConsoleKey userChoice = Console.ReadKey().Key;
 
@@ -57,10 +63,18 @@ namespace GreenEvent
                         AddNewPost(userId, myEvent.Id);
                         myEvent.ShowEvent(userId);
                         break;
-
-                    case ConsoleKey.Escape:
+                    case ConsoleKey.D2:
                         Console.Clear();
+                        if (!userIsJoined)
+                        {
+                            database.JoinEvent(userId, myEvent.Id);
+                        }
+                        myEvent.ShowEvent(userId);
+                        break;
+                    case ConsoleKey.Escape:
+                        //Console.Clear();
                         isRunning = false;
+                        //myEvent.ShowEvent(userId);
                         break;
 
                     default:

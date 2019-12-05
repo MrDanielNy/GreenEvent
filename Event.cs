@@ -51,11 +51,11 @@ namespace GreenEvent
 
         private static DataBase database = new DataBase();
 
-        private static int userId;
+        //private static int userId;
 
-        public void ShowEvent(int userid)
+        public void ShowEvent(int userId)
         {
-            userId = userid;
+            //userId = userid;
 
             List<User> users = database.GetUsersByEventId(this.Id);
 
@@ -564,16 +564,44 @@ namespace GreenEvent
             return location;
             
         }
-        public static int ShowAllEvents()
+        public static int ShowAllEvents(int userId, bool isJoining)
         {
+                        
             int eventId; //return if event is selected,  -1 if not
+            List<Event> allEvents; //list of events to show
+            
             //DataBase database = new DataBase();
-            var allEvents = database.GetAllEvents(); //create list of events..
+            if (userId == -1)
+            {
+                allEvents = database.GetAllEvents(); //create list of events..
+            }
+            else
+            {
+                if (!isJoining)
+                {
+                    allEvents = database.GetAllEventsJoined(userId);
+                }
+                else
+                {
+                    allEvents = database.GetAvailableEvents(userId);
+                }
+            }
+           
 
             //check if there is any events to list
             if (allEvents.Count == 0)
             {
-                Console.WriteLine("Det finns inga event...");
+                if (userId == -1)
+                {
+                    Console.WriteLine("Du måste skapa event...");
+                }
+                else
+                {
+                    if (!isJoining) Console.WriteLine("Du har inte joinat några event...");
+                    if (isJoining) Console.WriteLine("Det finns inga event att joina...");
+                }
+               
+                   
                 Console.ReadLine();
                 return -1;
             }

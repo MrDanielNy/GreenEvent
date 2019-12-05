@@ -118,46 +118,46 @@ namespace GreenEvent
 
         //    return newUser;
         //}
-        public void GetJoinedEvent(int UserId)
-        {
-            //Events user is assigned to
-            DataBase db = new DataBase();
-            List<string> userEvents = db.GetEventNameByUser(UserId);
-            int i = 1;
-            foreach (string s in userEvents)
-            {
-                Console.WriteLine(i + ") " + s);
-                i++;
-            }
-            Console.Write("\nTryck enter för att gå tillbaks..");
-            Console.ReadLine();
-        }
+        //public void GetJoinedEvent(int UserId)
+        //{
+        //    //Events user is assigned to
+        //    DataBase db = new DataBase();
+        //    List<string> userEvents = db.GetEventNameByUser(UserId);
+        //    int i = 1;
+        //    foreach (string s in userEvents)
+        //    {
+        //        Console.WriteLine(i + ") " + s);
+        //        i++;
+        //    }
+        //    Console.Write("\nTryck enter för att gå tillbaks..");
+        //    Console.ReadLine();
+        //}
 
-        public void GetAvailableEvent(int UserId)
-        {
-            //Events user is not assigned to
-            DataBase db = new DataBase();
-            var userAvailableEvents = new List<Event>();
-            //userAvailableEvents = db.GetAvailableEvents(UserId);
-            userAvailableEvents = db.GetAllEvents();
-            //userAvailableEvents.Name = db.GetAvailableEvents(UserId);
-            int i = 1;
-            Console.Clear();
-            foreach (Event currentEvent in userAvailableEvents)
-            {
-                Console.WriteLine(i + ") " + currentEvent.Name);
-                i++;
-            }
-            Console.Write("Välj ett event 1 to " + (i - 1) + " att joina: ");
-            string input = Console.ReadLine();
-            int.TryParse(input, out int userChoice);
+        //public void GetAvailableEvent(int UserId)
+        //{
+        //    //Events user is not assigned to
+        //    DataBase db = new DataBase();
+        //    var userAvailableEvents = new List<Event>();
+        //    //userAvailableEvents = db.GetAvailableEvents(UserId);
+        //    userAvailableEvents = db.GetAllEvents();
+        //    //userAvailableEvents.Name = db.GetAvailableEvents(UserId);
+        //    int i = 1;
+        //    Console.Clear();
+        //    foreach (Event currentEvent in userAvailableEvents)
+        //    {
+        //        Console.WriteLine(i + ") " + currentEvent.Name);
+        //        i++;
+        //    }
+        //    Console.Write("Välj ett event 1 to " + (i - 1) + " att joina: ");
+        //    string input = Console.ReadLine();
+        //    int.TryParse(input, out int userChoice);
 
-            //ConsoleKeyInfo tempChoice = Console.ReadKey();
-            //int userChoice = int.Parse(tempChoice.KeyChar.ToString());
+        //    //ConsoleKeyInfo tempChoice = Console.ReadKey();
+        //    //int userChoice = int.Parse(tempChoice.KeyChar.ToString());
             
-            db.JoinEvent(UserId, userChoice);
+        //    db.JoinEvent(UserId, userChoice);
 
-        }
+        //}
     }
 
 }
