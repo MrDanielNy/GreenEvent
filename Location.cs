@@ -41,7 +41,6 @@ namespace GreenEvent
                 bool doesItExist = false;
                 foreach (Location location in currectLocations)
                 {
-                    Console.WriteLine($"Comparing {location.Name.ToLower()} with {nameOfLocation.ToLower()}");
                     if(location.Name.ToLower() == nameOfLocation.ToLower())
                     {
                         doesItExist = true;
