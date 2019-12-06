@@ -49,13 +49,13 @@ namespace GreenEvent
         public string Location { get; set; } = "plats där eventet ska hållas"; //Location change nr 3
         public int LocationId { get; set; }
 
-        public DataBase database = new DataBase();
+        private static DataBase database = new DataBase();
 
-        private static int userId;
+        //private static int userId;
 
-        public void ShowEvent(int userid)
+        public void ShowEvent(int userId)
         {
-            userId = userid;
+            //userId = userid;
 
             List<User> users = database.GetUsersByEventId(this.Id);
 
@@ -79,7 +79,6 @@ namespace GreenEvent
                     Console.Write(users[i].UserName);
                 }
             }
-
             
             Post.ShowPosts(this, userId);
 
@@ -143,7 +142,7 @@ namespace GreenEvent
                         isRunning = false;
                         break;
                     case ConsoleKey.T:
-                        isRunning = DeleteEvent(this.Id);
+                        isRunning = DeleteEvent(Id);
                         break;
                     case ConsoleKey.Escape:
                         Console.Clear();
@@ -185,7 +184,7 @@ namespace GreenEvent
         
         /// <summary>
         /// originally for just creating event but changed til also view and edit
-        /// depending on what number you send in (0 for creating, 1-6 for editing and 7 for view
+        /// depending on what number you send in  to parameter (0 for creating, 1-6 for editing and 7 for view
         /// </summary>
         /// <param name="createTurn"></param>
         public void ModifyEvent(int createTurn)
@@ -564,16 +563,44 @@ namespace GreenEvent
             return location;
             
         }
-        public static int ShowAllEvents()
+        public static int ShowAllEvents(int userId, bool isJoining)
         {
+                        
             int eventId; //return if event is selected,  -1 if not
-            DataBase database = new DataBase();
-            var allEvents = database.GetAllEvents(); //create list of events..
+            List<Event> allEvents; //list of events to show
+            
+            //DataBase database = new DataBase();
+            if (userId == -1)
+            {
+                allEvents = database.GetAllEvents(); //create list of events..
+            }
+            else
+            {
+                if (!isJoining)
+                {
+                    allEvents = database.GetAllEventsJoined(userId);
+                }
+                else
+                {
+                    allEvents = database.GetAvailableEvents(userId);
+                }
+            }
+           
 
             //check if there is any events to list
             if (allEvents.Count == 0)
             {
-                Console.WriteLine("Det finns inga event...");
+                if (userId == -1)
+                {
+                    Console.WriteLine("Du måste skapa event...");
+                }
+                else
+                {
+                    if (!isJoining) Console.WriteLine("Du har inte joinat några event...");
+                    if (isJoining) Console.WriteLine("Det finns inga event att joina...");
+                }
+               
+                   
                 Console.ReadLine();
                 return -1;
             }

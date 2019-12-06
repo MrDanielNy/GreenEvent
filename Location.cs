@@ -27,7 +27,7 @@ namespace GreenEvent
             while(hasNotMadeSelection)
             {
                 Console.Clear();
-                Console.WriteLine("Old locations stored: ");
+                Console.WriteLine("Platser sparade: ");
                 foreach (Location location in currectLocations)
                 {
                     Console.WriteLine(location.Name);
