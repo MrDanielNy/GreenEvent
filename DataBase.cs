@@ -10,38 +10,12 @@ namespace GreenEvent
         private readonly string connectionString = "Data Source=localhost;Initial Catalog=GreenEvent;Integrated Security=True";
 
 
-/*
-        public List<Location> GetAllLocations()
-        {
-            List<Location> locations = new List<Location>();
 
-            string sqlQuery = "SELECT * FROM [Location]";
-
-            using (SqlConnection myConnection = new SqlConnection(connectionString))
-            {
-                SqlCommand sqlCommand = new SqlCommand(sqlQuery, myConnection);
-
-                myConnection.Open();
-
-                using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        Location location = new Location();
-
-                        location.Id = int.Parse(dataReader["Id"].ToString());
-                        location.Name = dataReader["Name"].ToString();
-                        location.MapLink = dataReader["MapLink"].ToString();
-
-                        locations.Add(location);
-                    }
-                    myConnection.Close();
-                }
-            }
-
-            return locations;
-        } */
-
+        /// <summary>
+        /// Get all users joined to event with sent in eventId 
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public List<User> GetUsersByEventId(int eventId)
         {
 
@@ -140,7 +114,10 @@ namespace GreenEvent
         public void DeleteEvent(int eventId)
         {
 
-            string sqlQuery = "DELETE FROM [Event] WHERE [Id] = @id";
+
+            string sqlQuery = "DELETE FROM [JOIN] WHERE [EventId] = @id " +
+                "DELETE FROM [POST] WHERE [EventId] = @id " +
+                "DELETE FROM [Event] WHERE [Id] = @id ";
 
             using (SqlConnection myConnection = new SqlConnection(connectionString))
             {
