@@ -79,7 +79,6 @@ namespace GreenEvent
                     Console.Write(users[i].UserName);
                 }
             }
-
             
             Post.ShowPosts(this, userId);
 
@@ -185,7 +184,7 @@ namespace GreenEvent
         
         /// <summary>
         /// originally for just creating event but changed til also view and edit
-        /// depending on what number you send in (0 for creating, 1-6 for editing and 7 for view
+        /// depending on what number you send in  to parameter (0 for creating, 1-6 for editing and 7 for view
         /// </summary>
         /// <param name="createTurn"></param>
         public void ModifyEvent(int createTurn)
