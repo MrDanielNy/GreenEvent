@@ -10,9 +10,4 @@ namespace GreenEvent
         public string RoleName;
 
     }
-
-   
-    
-
-
 }

@@ -15,6 +15,11 @@ namespace GreenEvent
 
         static DataBase database = new DataBase();
 
+        /// <summary>
+        /// Show posts on event
+        /// </summary>
+        /// <param name="myEvent"></param>
+        /// <param name="userId"></param>
         public static void ShowPosts(Event myEvent, int userId)
         {
 
@@ -89,13 +94,16 @@ namespace GreenEvent
 
 
         }
+
+        /// <summary>
+        /// Add new post to event.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="eventId"></param>
         private static void AddNewPost(int userId, int eventId)
         {
 
             Post newPost = new Post();
-            //string newPostBody;
-            //int newPostUserId;
-            //int newPostEventId;
             bool tryInput;
 
             do
@@ -119,8 +127,6 @@ namespace GreenEvent
             } while (!tryInput);
 
             database.AddPost(newPost);
-            //AdminPost.CreateAdminPost(newPostBody, newPostUserId);
-
         }
     }
 }

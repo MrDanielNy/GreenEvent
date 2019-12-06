@@ -8,12 +8,12 @@ namespace GreenEvent
     class Event
     {
         public int Id { get; set; }
-        public string Name { get; set; } //Name change nr 1
-        public string Description { get; set; } = "en liten beskrivning"; //Description change nr 2
+        public string Name { get; set; } 
+        public string Description { get; set; } = "en liten beskrivning";
         
         //when getting data from database trim the string
         //for a nice output
-        private string _date = "2019-01-01"; //Date change nr 4
+        private string _date = "2019-01-01"; 
         public string Date {
             get => _date;
             set
@@ -28,8 +28,9 @@ namespace GreenEvent
                 }
             }
         }
+
         //when getting data from database trim the string..
-        private string _time = "00:00";     //Time change nr 5
+        private string _time = "00:00"; 
         public string Time {
             get => _time;
             set
@@ -45,32 +46,35 @@ namespace GreenEvent
                 }
             } 
         }
-        public int Price { get; set; } //Price change nr 6
-        public string Location { get; set; } = "plats där eventet ska hållas"; //Location change nr 3
+        public int Price { get; set; } 
+        public string Location { get; set; } = "plats där eventet ska hållas";
         public int LocationId { get; set; }
 
         private static DataBase database = new DataBase();
 
-        //private static int userId;
-
+        /// <summary>
+        /// Show one event.
+        /// </summary>
+        /// <param name="userId">The userid to check events on</param>
         public void ShowEvent(int userId)
         {
-            //userId = userid;
-
+            //Download all users who has joined this event.
             List<User> users = database.GetUsersByEventId(this.Id);
 
+            //
             ModifyEvent(7);
 
             Console.SetCursorPosition(60, 0);
             Console.Write("--<<Användare som har joinat detta event>>--");
 
-            if (users.Count == 0)
+            //Check to see if we have joined users in this event.
+            if (users.Count == 0) //No users joined
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.SetCursorPosition(67, 3);
                 Console.Write("Inga användare har joinat än");
             }
-            else
+            else //At least one user has joined
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 for (int i = 0; i < users.Count ; i++)
@@ -80,10 +84,14 @@ namespace GreenEvent
                 }
             }
             
+            //Show posts
             Post.ShowPosts(this, userId);
 
         }
 
+        /// <summary>
+        /// Edit event details
+        /// </summary>
         public void EditEvent()
         {
             bool isRunning = true;
@@ -157,7 +165,11 @@ namespace GreenEvent
 
         }
         
-        
+        /// <summary>
+        /// Delete Event
+        /// </summary>
+        /// <param name="eventId">EventId to deleate</param>
+        /// <returns></returns>
         private bool DeleteEvent(int eventId)
         {
             Console.WriteLine("");
@@ -181,12 +193,11 @@ namespace GreenEvent
             }
 
         }
-        
+
         /// <summary>
-        /// originally for just creating event but changed til also view and edit
-        /// depending on what number you send in  to parameter (0 for creating, 1-6 for editing and 7 for view
+        /// Create, view and edit event.
         /// </summary>
-        /// <param name="createTurn"></param>
+        /// <param name="createTurn">Depending on what number you send in  to parameter (0 for creating, 1-6 for editing and 7 for view</param>
         public void ModifyEvent(int createTurn)
         {
             var locationNames = database.GetAllLocations(); //create list of locations
@@ -442,7 +453,7 @@ namespace GreenEvent
 
        
         /// <summary>
-        /// method for set location to event
+        /// Method for set location to event
         /// </summary>
         /// <param name="locations"></param>
         private static Location SetLocationForEvent(List<Location> locations)
@@ -563,13 +574,19 @@ namespace GreenEvent
             return location;
             
         }
+
+        /// <summary>
+        /// Shows all events in a list
+        /// </summary>
+        /// <param name="userId">A User Id</param>
+        /// <param name="isJoining">Boolean if a user join</param>
+        /// <returns></returns>
         public static int ShowAllEvents(int userId, bool isJoining)
         {
                         
             int eventId; //return if event is selected,  -1 if not
             List<Event> allEvents; //list of events to show
             
-            //DataBase database = new DataBase();
             if (userId == -1)
             {
                 allEvents = database.GetAllEvents(); //create list of events..

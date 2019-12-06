@@ -10,17 +10,21 @@ namespace GreenEvent
         public string UserName;
         public string Password;
         public string Role;
-       
 
-
+        /// <summary>
+        /// Check if passwords match eachother
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>True or False</returns>
         public bool CheckPassword(string password)
         {
             return Password == password;
         }
 
         /// <summary>
-        /// method to send data for register new User
+        /// Method to send data for register new User
         /// </summary>
+        /// <param name="rolename">Used to select if this is a user or a admin.</param>
         static public User RegisterNewUser(string rolename)
         {
 
@@ -28,10 +32,7 @@ namespace GreenEvent
             string newPassword; //var for new users password
             DataBase dataBase = new DataBase();
 
-
-            //bool tryInput; //if new input is incorrect bool will be false
-            //User controlUser = new User();
-            User controlUser; // = null; //user object to check new registration
+            User controlUser; //user object to check new registration
             do
             {
                 Console.Write("Välj ett användarnamn: ");
@@ -85,79 +86,8 @@ namespace GreenEvent
             //get the new user and set user Id 
             newUser = db.GetUserByUsername(newUsername);
 
-
-            //User newUser = CreateUser(newUsername, newPassword, rolename);
             return newUser;
         }
-
-
-        //static private User CreateUser(string username, string password, string rolename)
-        //{
-        //    User newUser = new User();
-
-        //    newUser.UserName = username;
-        //    newUser.Password = password;
-        //    newUser.Role = rolename;
-
-
-        //    DataBase db = new DataBase();
-
-        //    //DataBase.AddUser(newUser);
-        //    //Skicka newUser till databasen
-        //    db.AddUser(newUser);
-
-        //    //Hämta tillbaka det nyassignade id:t från databasen och lägg till på newUser.Id
-        //    newUser = db.GetUserByUsername(username);
-
-        //    return newUser;
-        //}
-
-        //public User CreateAdmin(string username, string password)
-        //{
-        //    User newUser = new User();
-
-        //    return newUser;
-        //}
-        //public void GetJoinedEvent(int UserId)
-        //{
-        //    //Events user is assigned to
-        //    DataBase db = new DataBase();
-        //    List<string> userEvents = db.GetEventNameByUser(UserId);
-        //    int i = 1;
-        //    foreach (string s in userEvents)
-        //    {
-        //        Console.WriteLine(i + ") " + s);
-        //        i++;
-        //    }
-        //    Console.Write("\nTryck enter för att gå tillbaks..");
-        //    Console.ReadLine();
-        //}
-
-        //public void GetAvailableEvent(int UserId)
-        //{
-        //    //Events user is not assigned to
-        //    DataBase db = new DataBase();
-        //    var userAvailableEvents = new List<Event>();
-        //    //userAvailableEvents = db.GetAvailableEvents(UserId);
-        //    userAvailableEvents = db.GetAllEvents();
-        //    //userAvailableEvents.Name = db.GetAvailableEvents(UserId);
-        //    int i = 1;
-        //    Console.Clear();
-        //    foreach (Event currentEvent in userAvailableEvents)
-        //    {
-        //        Console.WriteLine(i + ") " + currentEvent.Name);
-        //        i++;
-        //    }
-        //    Console.Write("Välj ett event 1 to " + (i - 1) + " att joina: ");
-        //    string input = Console.ReadLine();
-        //    int.TryParse(input, out int userChoice);
-
-        //    //ConsoleKeyInfo tempChoice = Console.ReadKey();
-        //    //int userChoice = int.Parse(tempChoice.KeyChar.ToString());
-            
-        //    db.JoinEvent(UserId, userChoice);
-
-        //}
     }
 
 }

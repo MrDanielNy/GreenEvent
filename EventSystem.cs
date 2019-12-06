@@ -13,11 +13,6 @@ namespace GreenEvent
         private DataBase database = new DataBase();
         private int eventId; //id for getting event
         private bool isAdmin = false; //for using menu with user and admin
-        
-        
-        //User User = new User();
-
-
 
         public void Start()
         {
@@ -55,9 +50,6 @@ namespace GreenEvent
             }
             
         }// end Start
-
-       
-       
 
         /// <summary>
         /// Method to log in
@@ -100,9 +92,8 @@ namespace GreenEvent
             ShowMenu();
         }
 
-        //This function is not completed
         /// <summary>
-        /// ShowMenu
+        /// ShowMenu displas the right menu depending on if we have a Admin or User logged in.
         /// </summary>
         /// <returns></returns>
         private void ShowMenu()
@@ -112,15 +103,11 @@ namespace GreenEvent
                 isAdmin = true;
             }
             bool running = true;
-            Location location = new Location();
-            //string rolename = "Admin";
-
-            
+            Location location = new Location();            
 
             while (running)
             {
                 Console.Clear();
-                //changed exit to 0
                 
                 if(isAdmin)
                 {
@@ -163,7 +150,6 @@ namespace GreenEvent
                                 myEvent.ShowEvent(loggedInUser.Id);
                             }
 
-                            //User.GetJoinedEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D2:
@@ -185,8 +171,6 @@ namespace GreenEvent
                                 var myEvent = database.GetEventByEventId(eventId);
                                 myEvent.ShowEvent(loggedInUser.Id);
                             }
-
-                            //User.GetAvailableEvent(loggedInUser.Id);
                         }
                         break;
                     case ConsoleKey.D3:
@@ -230,46 +214,11 @@ namespace GreenEvent
                         running = false;
                         break;
                     default:
-                        //Console.WriteLine("Felaktigt val, försök igen.");
                         break;
                 }
 
             }
                                                      
         } //end of showMenu
-
-
-        //private void AddNewAdminPost()
-        //{
-        //    string newPostBody;
-        //    int newPostUserId;
-        //    //int newPostEventId;
-        //    bool tryInput;
-
-        //    do
-        //    {
-        //        Console.Write("Skriv inlägg: ");
-        //        newPostBody = Console.ReadLine();
-        //        newPostUserId = loggedInUser.Id;
-
-
-        //        if (newPostBody == null)
-        //        {
-        //            Console.WriteLine($"Inlägg kan inte vara tomt");
-        //            Console.ReadLine();
-        //            tryInput = false;
-        //        }
-        //        else
-        //        {
-        //            tryInput = true;
-        //        }
-
-        //    } while (!tryInput);
-
-
-        //    AdminPost.CreateAdminPost(newPostBody, newPostUserId);
-
-        //}
-
     }
 }
