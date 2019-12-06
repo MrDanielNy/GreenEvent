@@ -307,8 +307,10 @@ namespace GreenEvent
                         this.Description = Console.ReadLine();
                         break;
                    
-                    case 3:  //fill in location
-                        var location = SetLocationForEvent(locationNames);
+                    case 3:  //set location
+                        Location location = new Location();
+
+                        location = location.SelectLocation();
                         this.Location = location.Name;
                         this.LocationId = location.Id;
                         if (!isEditing)
@@ -445,135 +447,9 @@ namespace GreenEvent
                         break;
                     }
                 }
-
             }
-
-
         }
 
-       
-        /// <summary>
-        /// Method for set location to event
-        /// </summary>
-        /// <param name="locations"></param>
-        private static Location SetLocationForEvent(List<Location> locations)
-        {
-            Location location = new Location();
-            bool isSelecting = true; //user is selecting a location
-            int showRow = 0; //What row of 10 currently showing
-            int maxNrLocations = locations.Count -1; //the number of locations in list
-            int shownLocation; //the location user picks
-            bool showMore; //show the next 10 locations
-            bool showLess = false; //show the 10 locations before
-            int selectedLocation = -1; //if location not selected this is -1
-
-            while (isSelecting)
-            {
-                Console.Clear();
-                Console.WriteLine("Välj en plats för eventet");
-
-                showMore = false;
-                shownLocation = 0 + showRow;
-                int selectionNr = 0;
-
-                while (shownLocation <= maxNrLocations) //As long as there are locations to show
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{selectionNr}) {locations[shownLocation].Name}");
-                    selectionNr++;
-                    shownLocation++;
-                    
-                    if (selectionNr % 10 == 0 && shownLocation - 1 != maxNrLocations) //when 10 locations are shown break the loop
-                    {
-                        showMore = true;
-                        break;
-                    }
-                }
-                if (showMore || showLess)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                }
-                if (showLess)
-                {
-                    Console.Write("<<<<--- Bläddra vänster\t");
-                }
-                if (showMore)
-                {
-                    Console.Write("Bläddra höger------->>>>");
-                }
-                Console.ForegroundColor = ConsoleColor.White;
-
-                ConsoleKey userChoice = Console.ReadKey().Key;
-
-                switch (userChoice)
-                {
-                    case ConsoleKey.D0:
-                        selectedLocation = 0 + showRow;
-                        break;
-                    case ConsoleKey.D1:
-                        selectedLocation = 1 + showRow;
-                        break;
-                    case ConsoleKey.D2:
-                        selectedLocation = 2 + showRow;
-                        break;
-                    case ConsoleKey.D3:
-                        selectedLocation = 3 + showRow;
-                        break;
-                    case ConsoleKey.D4:
-                        selectedLocation = 4 + showRow;
-                        break;
-                    case ConsoleKey.D5:
-                        selectedLocation = 5 + showRow;
-                        break;
-                    case ConsoleKey.D6:
-                        selectedLocation = 6 + showRow;
-                        break;
-                    case ConsoleKey.D7:
-                        selectedLocation = 7 + showRow;
-                        break;
-                    case ConsoleKey.D8:
-                        selectedLocation = 8 + showRow;
-                        break;
-                    case ConsoleKey.D9:
-                        selectedLocation = 9 + showRow;
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        if (showLess)
-                        {
-                            showRow -= 10;
-                            if (showRow == 0) //if showing the first 10 in list
-                            {
-                                showLess = false;
-                            }
-                        }
-                        break;
-                    case ConsoleKey.RightArrow:
-                        if (showMore)
-                        {
-                            showRow += 10;
-                            showLess = true;
-                        }
-                        break;
-                }
-
-                if (selectedLocation > maxNrLocations) //if picking a number not on the list
-                {
-                    selectedLocation = -1;
-                }
-                else if(selectedLocation >= 0)
-                {
-                    isSelecting = false;
-                }
-
-
-            }// end isSelecting
-
-            location = locations[selectedLocation];
-
-
-            return location;
-            
-        }
 
         /// <summary>
         /// Shows all events in a list
