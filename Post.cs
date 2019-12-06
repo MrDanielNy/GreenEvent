@@ -67,6 +67,7 @@ namespace GreenEvent
                         Console.Clear();
                         AddNewPost(userId, myEvent.Id);
                         myEvent.ShowEvent(userId);
+                        isRunning = false;
                         break;
                     case ConsoleKey.D2:
                         Console.Clear();
@@ -75,9 +76,10 @@ namespace GreenEvent
                             database.JoinEvent(userId, myEvent.Id);
                         }
                         myEvent.ShowEvent(userId);
+                        isRunning = false;
                         break;
                     case ConsoleKey.Escape:
-                        //Console.Clear();
+                       
                         isRunning = false;
                         //myEvent.ShowEvent(userId);
                         break;

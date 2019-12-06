@@ -516,7 +516,7 @@ namespace GreenEvent
                 int selectionNr = 0; //the number shown in console
 
 
-                while (usersPick <= maxNrEvents) //As long as there are locations to show
+                while (usersPick <= maxNrEvents) //As long as there are events to show
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write($"{selectionNr}) {allEvents[usersPick].Name}");
@@ -524,9 +524,9 @@ namespace GreenEvent
                     Console.WriteLine($"{allEvents[usersPick].Date}");
                     selectionNr++;
                     usersPick++;
-                    if (selectionNr % 10 == 0 && usersPick -1 != maxNrEvents) //when 10 locations are shown break the loop
-                    {
-                        showMore = true;
+                    if (selectionNr % 10 == 0 && usersPick -1 != maxNrEvents) //when 10 events are shown break the loop
+                    {                                                         //if all events are shown the loop will break anyway
+                        showMore = true;                                       //and showMore will not be true
                         break;
                     }
                 }
