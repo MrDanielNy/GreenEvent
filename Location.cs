@@ -10,7 +10,7 @@ namespace GreenEvent
         public string Name;
         public string MapLink;
 
-        public void CreateNewLocation() //, EventSystem eventSystem)
+        public void CreateNewLocation() 
         {
             //Initiate Variables
             string nameOfLocation = ""; 
@@ -127,6 +127,7 @@ namespace GreenEvent
                 Console.WriteLine("Välj vilken plats du vill redigera, backa med Escape-knappen");
                 ConsoleKey userChoice = Console.ReadKey().Key;
                 int userChoiceAsNumber = 0;
+
                 //Did the user choose a valid number or escape?
                 if(int.TryParse(userChoice.ToString().Substring(1, 1), out userChoiceAsNumber)) //Check if second char is a number
                 {
