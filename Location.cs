@@ -245,7 +245,7 @@ namespace GreenEvent
 
             //Show old maplink
             Console.WriteLine("Tidigare kartlänk " + location.MapLink);
-            Console.Write("Vänligen skriv in en ny länkadress: ");
+            Console.Write("Vänligen skriv in en ny länkadress eller tryck enter för att behålla den gamla: ");
             string newMapLink = Console.ReadLine();
             if (newMapLink == "")  //User just pressed enter, save the old maplink back
                 newMapLink = location.MapLink;
